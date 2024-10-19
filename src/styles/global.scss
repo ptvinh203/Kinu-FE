@@ -1,0 +1,60 @@
+$dark_yellow: #E99E09;
+$light_yellow: #FFC248;
+$brown: #494949;
+$ligt_brown: #452F02;
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.dark-yellow-text {
+    color: $dark_yellow;
+}
+
+.light-yellow-text {
+    color: $light_yellow;
+}
+
+.brown-background{
+    background-color: $ligt_brown;
+    border-radius: 100%;
+    padding: 10px;
+}
+
+.logo-weight {
+    font-weight: 700;
+}
+
+.description-weight {
+    font-weight: 500;
+}
+
+.button {
+    background-color: $light_yellow;
+    border-radius: 20px;
+    color: white;
+    padding: 10px 20px 10px 20px;
+}
+
+.auth-background {
+    background-color: $light_yellow;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+}
+
+.icon{
+    background-color: $light_yellow;
+    padding: 10px;
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+}
+
+.avatar{
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+}
