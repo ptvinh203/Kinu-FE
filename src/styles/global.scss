@@ -1,7 +1,7 @@
 $dark_yellow: #E99E09;
 $light_yellow: #FFC248;
 $brown: #494949;
-$ligt_brown: #452F02;
+$light_brown: #452F02;
 
 body {
     margin: 0;
@@ -16,8 +16,12 @@ body {
     color: $light_yellow;
 }
 
+.light-yellow-background{
+    background-color: $light_yellow;
+}
+
 .brown-background{
-    background-color: $ligt_brown;
+    background-color: $light_brown;
     border-radius: 100%;
     padding: 10px;
 }
