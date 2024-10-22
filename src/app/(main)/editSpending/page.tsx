@@ -101,8 +101,8 @@ const Page: React.FC = () => {
               {iconOptions.map(icon => (
                 <div
                   key={icon.id}
-                  className={`${styles.colorItem} ${selectedColor === icon.name ? styles.selected : ''}`}
-                  onClick={() => setSelectedColor(icon.name)}
+                  className={`${styles.colorItem} ${selectedIcon === icon.name ? styles.selected : ''}`}
+                  onClick={() => setSelectedIcon(icon.name)}
                 >
                   <span className={styles.colorName}>{icon.icon}</span>
                 </div>
