@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import Image from 'next/image';
-import { 
+import {
   SearchOutlined,
   SunOutlined,
   CarOutlined,
@@ -11,7 +11,7 @@ import {
   HomeOutlined,
   HeartOutlined,
   PrinterOutlined
- } from '@ant-design/icons';
+} from '@ant-design/icons';
 import { successNotification } from "../../../components/Notification/index"
 import styles from './editSpen.module.scss';
 
@@ -67,6 +67,16 @@ const Page: React.FC = () => {
         footer={null}
         width="30%"
         className={styles.mobalEditSpen}
+        styles={{
+          content: {
+            backgroundColor: '#fff5e2', // Ensure the content area has the desired background color
+            borderRadius: '8px',
+            marginTop: '-40px'
+          },
+          body: {
+            backgroundColor: '#fff5e2', // Ensure the modal body has the desired background
+          },
+        }}
       >
         <div className={styles.containerMobal}>
           <div className={styles.headMobal}>
@@ -90,12 +100,12 @@ const Page: React.FC = () => {
             <div className={styles.colorOptions}>
               {iconOptions.map(icon => (
                 <div
-                key={icon.id}
-                className={`${styles.colorItem} ${selectedColor === icon.name ? styles.selected : ''}`}
-                onClick={() => setSelectedColor(icon.name)}
-              >
-                <span className={styles.colorName}>{icon.icon}</span>
-              </div>
+                  key={icon.id}
+                  className={`${styles.colorItem} ${selectedColor === icon.name ? styles.selected : ''}`}
+                  onClick={() => setSelectedColor(icon.name)}
+                >
+                  <span className={styles.colorName}>{icon.icon}</span>
+                </div>
               ))}
             </div>
           </div>

@@ -1,9 +1,7 @@
-.ant-modal .ant-modal-content{
-  background-color: #fff5e2 !important;
-}
-.mobalEditSpen{
-  
-  .containerMobal{
+.mobalEditSpen {
+
+  .containerMobal {
+    // background-color: #fff5e2;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -11,7 +9,7 @@
     width: 100%;
     padding: 0 10%;
 
-    .headMobal{
+    .headMobal {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -19,7 +17,7 @@
       padding-top: 30px;
       padding-bottom: 30px;
 
-      .titleMobal{
+      .titleMobal {
         font-size: 20px;
         font-weight: bold;
       }
@@ -42,6 +40,7 @@
         background: #ffffff;
         width: fit-content;
       }
+
       .inputMobal {
         padding: 11px 10px;
         font-size: 0.75rem;
@@ -49,6 +48,7 @@
         border-radius: 10px;
         background: #ffffff;
       }
+
       .inputMobal:focus {
         outline: none;
       }
@@ -57,11 +57,11 @@
         display: flex;
         // justify-content: center;
         width: 100%;
-        flex-wrap: wrap; 
+        flex-wrap: wrap;
         border-radius: 10px;
         border: 2px #000000 solid;
         padding: 10px;
-      
+
         .colorItem {
           display: flex;
           width: 14%;
@@ -73,36 +73,39 @@
           border-radius: 8px;
           cursor: pointer;
           transition: background-color 0.3s;
-      
+
           &:hover {
             background-color: #f0f0f0;
           }
-      
+
           &.selected {
-            background-color: #e0e0e0; /* Màu nền khi được chọn */
-            border-color: #007bff; /* Thay đổi màu viền khi được chọn */
+            background-color: #e0e0e0;
+            /* Màu nền khi được chọn */
+            border-color: #007bff;
+            /* Thay đổi màu viền khi được chọn */
           }
-      
+
           .icon {
             font-size: 24px;
           }
         }
       }
-      
+
       .selectedText {
         margin-top: 10px;
         font-weight: bold;
         text-align: center;
       }
-      
-    }    
-    .modalFooter{
-      display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-top: 20px;
 
-      .btnMobal{
+    }
+
+    .modalFooter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 20px;
+
+      .btnMobal {
         width: 100%;
         border-radius: 10px;
         padding: 20px;
