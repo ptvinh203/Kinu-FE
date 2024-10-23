@@ -4,8 +4,11 @@ import React, { useState } from "react";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import styles from "./login.module.scss";
 import axios from "axios";
+import { useRouter } from 'next/navigation'
 
 const Login = () => {
+    const router = useRouter()
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -31,6 +34,8 @@ const Login = () => {
         })
         .then(res => {
             console.log(res)
+            localStorage.setItem('userId', res.data.data.id)
+            router.push('/spendtype')
         })
         .catch(err => {
             console.log(err)
