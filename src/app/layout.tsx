@@ -1,5 +1,6 @@
 import '../styles/tailwind.scss';
 import '../styles/global.scss';
+import '../../envConfig.ts'
 
 export const metadata = {
   title: 'Next.js',

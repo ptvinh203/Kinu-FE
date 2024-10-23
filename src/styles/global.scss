@@ -1,11 +1,19 @@
 $dark_yellow: #E99E09;
 $light_yellow: #FFC248;
+$light_pink: #FFF5E2;
 $brown: #494949;
-$ligt_brown: #452F02;
+$light_brown: #452F02;
+:root{
+    --light-pink: #FFF5E2;
 
+}
 body {
     margin: 0;
     padding: 0;
+}
+
+.pink-bg{
+    background-color: $light_pink;
 }
 
 .dark-yellow-text {
@@ -24,8 +32,12 @@ body {
     background-color: $light_yellow;
 }
 
+.light-yellow-background{
+    background-color: $light_yellow;
+}
+
 .brown-background{
-    background-color: $ligt_brown;
+    background-color: $light_brown;
     border-radius: 100%;
     padding: 10px;
 }

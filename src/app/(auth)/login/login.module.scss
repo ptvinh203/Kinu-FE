@@ -1,0 +1,126 @@
+.container {
+  position: relative;
+  width: 100%;
+  background-color: #F5F5F5; 
+  padding: 100px 50px 50px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+
+  .headLo {
+    margin-bottom: 30px;
+
+    .headTxt {
+      font-size: 25px;
+      font-weight: bold;
+      font-family: Arial, Sans-serif;
+    }
+  }
+
+  .abc {
+    font-size: 15px;
+  }
+
+  .containerLo {
+    display: grid;
+  }
+
+  .inputGroup {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 1em 0;
+    position: relative;
+    width: 100%;
+
+    .inputLo {
+      font-size: 100%;
+      padding: 0.8em;
+      outline: none;
+      border: 1px solid rgb(0, 0, 0);
+      background-color: transparent;
+      border-radius: 10px;
+      width: 100%;
+    }
+
+    .text {
+      font-size: 100%;
+      position: absolute;
+      left: 0;
+      padding: 0.8em;
+      margin-left: 0.5em;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      color: rgb(100, 100, 100);
+    }
+
+    .inputLo:focus ~ .text,
+    .inputLo:valid ~ .text {
+      transform: translateY(-50%) scale(.9);
+      margin: 0;
+      margin-left: 1.3em;
+      padding: 0.4em;
+      background-color: #F5F5F5;
+    }
+
+    .togglePassword {
+      position: absolute;
+      background: none;
+      border: none;
+      color: #000000;
+      margin-left: -35px;
+      margin-top: 14px;
+    }
+  }
+
+  .content {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 10px;
+
+    .pass-link {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .btnLo {
+    background-color: #ffd034; 
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 13px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+
+  .regisLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 10px;
+
+    .textRegis {
+      font-family: "Geneva", Tahoma, sans-serif;
+      font-size: 15px;
+      margin-right: 5px;
+    }
+
+    .linkRegis {
+      font-family: "Geneva", Tahoma, sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      color: #ffc248;
+    }
+  }
+}
+
+.triangleDown {
+  position: relative;
+  top: -1px;
+  left: 0;
+  width: 100%; /* Đảm bảo chiều rộng của tam giác bằng với container */
+  height: 100px;
+  background-color: #F5F5F5;
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}

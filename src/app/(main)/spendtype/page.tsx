@@ -3,6 +3,7 @@
 import { FaBeer } from 'react-icons/fa';
 
 import Image from 'next/image';
+import styles from './spendtype.module.scss'
 
 import { useState } from 'react';
 
@@ -40,6 +41,9 @@ const SpendType = () => {
         icon: '',
         color: '',
     });
+
+    const [spendType, setSpendType] = useState("");
+    const [spendAmount, setSpendAmount] = useState("");
 
     const handleDeleteClick = (item: any) => {
         setSelectedItem(item);
@@ -103,7 +107,7 @@ const SpendType = () => {
     return (
         <div className="flex w-full h-full p-0 space-x-10">
             {/* Sidebar Thêm loại chi tiêu */}
-            <div className="w-1/3 p-5 bg-yellow-100 rounded-lg">
+            <div className="w-1/3 p-5 pink-bg rounded-lg">
                 <div className="h-[130px] mb-5 p-4 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
                     <Image className="absolute right-0 top-0 pl-[220px] " src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
                     <div className="absolute top-0 right-0 left-0 bottom-0 flex flex-col gap-4 px-8 py-4 z-[10]">
@@ -123,13 +127,37 @@ const SpendType = () => {
                     <h3 className="text-xl mb-3 font-bold">Thêm Loại Chi Tiêu</h3>
                     <form>
                         <div className="mb-3">
-                            <label className="block mb-1">Tên loại chi tiêu</label>
-                            <input type="text" className="w-full p-2 border border-gray-300 rounded" placeholder="Nhập tên loại chi tiêu" />
+                            <label className="">Tên loại chi tiêu</label>
+                            <div className={styles.inputGroup}>
+                                <input
+                                    type="text"
+                                    value={spendType}
+                                    onChange={(e) => setSpendType(e.target.value)}
+                                    className={styles.inputLo}
+                                    required
+                                    autoComplete="off"
+                                />
+                                <label htmlFor="email" className={styles.text}>
+                                    Loại chi tiêu
+                                </label>
+                            </div>
                         </div>
 
                         <div className="mb-3">
                             <label className="block mb-1">Số tiền dự tính</label>
-                            <input type="number" className="w-full p-2 border border-gray-300 rounded" placeholder="Nhập số tiền" />
+                            <div className={styles.inputGroup}>
+                                <input
+                                    type="text"
+                                    value={spendAmount}
+                                    onChange={(e) => setSpendAmount(e.target.value)}
+                                    className={styles.inputLo}
+                                    required
+                                    autoComplete="off"
+                                />
+                                <label htmlFor="email" className={styles.text}>
+                                    Số tiền dự tính
+                                </label>
+                            </div>
                         </div>
 
                         <div className="mb-3 ">
@@ -179,7 +207,7 @@ const SpendType = () => {
                             </div>
                         </div>
 
-                        <button className="mt-3 w-full p-2 bg-yellow-500 text-white rounded transition-opacity duration-300 hover:opacity-50">Thêm loại chi tiêu</button>
+                        <button className="mt-3 w-full p-2 light-yellow-bg text-white rounded transition-opacity duration-300 hover:opacity-50">Thêm loại chi tiêu</button>
                     </form>
                 </div>
             </div>

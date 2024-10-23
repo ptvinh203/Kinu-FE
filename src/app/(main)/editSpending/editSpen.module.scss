@@ -1,0 +1,117 @@
+.mobalEditSpen {
+
+  .containerMobal {
+    // background-color: #fff5e2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    width: 100%;
+    padding: 0 10%;
+
+    .headMobal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding-top: 30px;
+      padding-bottom: 30px;
+
+      .titleMobal {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+
+    .coolinput {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      position: static;
+
+      .text {
+        font-size: 0.75rem;
+        color: #000000;
+        font-weight: 700;
+        position: relative;
+        top: 0.5rem;
+        margin: 0 0 0 7px;
+        padding: 0 3px;
+        background: #ffffff;
+        width: fit-content;
+      }
+
+      .inputMobal {
+        padding: 11px 10px;
+        font-size: 0.75rem;
+        border: 2px #000000 solid;
+        border-radius: 10px;
+        background: #ffffff;
+      }
+
+      .inputMobal:focus {
+        outline: none;
+      }
+
+      .colorOptions {
+        display: flex;
+        // justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
+        border-radius: 10px;
+        border: 2px #000000 solid;
+        padding: 10px;
+
+        .colorItem {
+          display: flex;
+          width: 14%;
+          height: 30px;
+          align-items: center;
+          justify-content: center;
+          margin: 0 4px 4px 4px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+
+          &.selected {
+            background-color: #e0e0e0;
+            /* Màu nền khi được chọn */
+            border-color: #007bff;
+            /* Thay đổi màu viền khi được chọn */
+          }
+
+          .icon {
+            font-size: 24px;
+          }
+        }
+      }
+
+      .selectedText {
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+    }
+
+    .modalFooter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 20px;
+
+      .btnMobal {
+        width: 100%;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        background-color: #ffc248;
+      }
+    }
+  }
+}

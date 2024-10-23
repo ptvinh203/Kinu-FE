@@ -1,0 +1,45 @@
+.inputGroup {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 1em 0;
+    position: relative;
+    width: 100%;
+
+    .inputLo {
+      font-size: 100%;
+      padding: 0.8em;
+      outline: none;
+      border: 1px solid rgb(0, 0, 0);
+      background-color: transparent;
+      border-radius: 10px;
+      width: 100%;
+    }
+
+    .text {
+      font-size: 100%;
+      position: absolute;
+      left: 0;
+      padding: 0.8em;
+      margin-left: 0.5em;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      color: rgb(100, 100, 100);
+    }
+
+    .inputLo:focus ~ .text,
+    .inputLo:valid ~ .text {
+      transform: translateY(-50%) scale(.9);
+      margin: 0;
+      margin-left: 1.3em;
+      padding: 0.4em;
+      background-color: var(--light-pink);
+    }
+
+    .togglePassword {
+      position: absolute;
+      background: none;
+      border: none;
+      color: #000000;
+      margin-left: -35px;
+      margin-top: 14px;
+    }
+  }
