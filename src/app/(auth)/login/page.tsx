@@ -25,7 +25,16 @@ const Login = () => {
         console.log("email:", email);
         console.log("Mat khau:", password);
 
-        // axios.post('')
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+            email,
+            password
+        })
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     };
 
     return (
