@@ -1,22 +1,23 @@
 "use client";
 
-import { FaBeer } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTrashCan, faPenToSquare   } from '@fortawesome/free-solid-svg-icons';
+import { Button, Modal } from 'antd';
 import Image from 'next/image';
+import {
+    SearchOutlined,
+    SunOutlined,
+    CarOutlined,
+    ShoppingCartOutlined,
+    HomeOutlined,
+    HeartOutlined,
+    PrinterOutlined
+  } from '@ant-design/icons';
 import styles from './spendtype.module.scss'
+import { successNotification } from "../../../components/Notification/index"
+import React, { useState } from 'react';
 
-import { useState } from 'react';
-
-const colors = [
-    ['#FFA500', '#FFFFFF', '#FF4500', '#00BFFF', '#008000', '#FF0000'],
-    ['#800080', '#9370DB', '#20B2AA', '#000080', '#A9A9A9', '#008000'],
-    ['#800080', '#FF69B4', '#FF6347', '#006400', '#8B0000', '#4682B4'],
-    ['#FFD700', '#FF8C00', '#ADFF2F', '#00FF7F', '#00CED1', '#1E90FF'],
-    ['#FF1493', '#FFB6C1', '#FF4500', '#32CD32', '#8A2BE2', '#FF6347'],
-];
-
-const SpendType = () => {
+const SpendType: React.FC = () => {
     const [spendTypes, setSpendTypes] = useState([
         { name: 'Tiền nhà', estimated: 3000000, spent: 3000000, color: 'red', icon: '🏠' },
         { name: 'Đi lại', estimated: 1500000, spent: 500000, color: 'purple', icon: '🚗' },
@@ -28,13 +29,36 @@ const SpendType = () => {
         { name: 'Chi tiêu khác', estimated: 500000, spent: 0, color: 'gray', icon: '🔧' },
     ]);
 
-    const totalEstimated = spendTypes.reduce((total, item) => total + item.estimated, 0);
-    const totalSpent = spendTypes.reduce((total, item) => total + item.spent, 0);
+    const colorOptions = [
+        { id: 1, name: 'Đỏ', color: '#FF0000' },
+        { id: 2, name: 'Xanh dương', color: '#0000FF' },
+        { id: 3, name: 'Xanh lá', color: '#00FF00' },
+        { id: 4, name: 'Vàng', color: '#FFFF00' },
+        { id: 5, name: 'Tím', color: '#800080' },
+        { id: 6, name: 'Xanh lá', color: '#00FF00' },
+        { id: 7, name: 'Vàng', color: '#FFFF00' },
+        { id: 8, name: 'Tím', color: '#800080' },
+      ];
 
+      const iconOptions = [
+        { id: 1, name: 'Tìm kiếm', icon: <SearchOutlined /> },
+        { id: 2, name: 'Mặt trời', icon: <SunOutlined /> },
+        { id: 3, name: 'Xe hơi', icon: <CarOutlined /> },
+        { id: 4, name: 'Giỏ hàng', icon: <ShoppingCartOutlined /> },
+        { id: 5, name: 'Nhà', icon: <HomeOutlined /> },
+        { id: 6, name: 'Trái tim', icon: <HeartOutlined /> },
+        { id: 7, name: 'Máy in', icon: <PrinterOutlined /> },
+      ];
+    
+
+    const totalEstimated = spendTypes.reduce((total, item) => total + item.estimated, 0);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+    const [selectedColor, setSelectedColor] = useState<string | null>(null);
+    const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-
+    const [searchTerm, setSearchTerm] = useState("");
     const [editFormData, setEditFormData] = useState({
         name: '',
         estimated: '',
@@ -42,15 +66,28 @@ const SpendType = () => {
         icon: '',
         color: '',
     });
-
     const [spendType, setSpendType] = useState("");
     const [spendAmount, setSpendAmount] = useState("");
+
+
+    const showModal = () => {
+        setIsModalVisible(true);
+      };
+    
+      const handleOk = () => {
+        setIsModalVisible(false);
+        successNotification("Chỉnh sửa thành công");
+      };
+    
+      const handleCancel = () => {
+        setIsModalVisible(false);
+      };
 
     const handleDeleteClick = (item: any) => {
         setSelectedItem(item);
         setIsDeleteModalOpen(true);
     };
-
+    
     const handleEditClick = (item: any) => {
         setSelectedItem(item);
         setEditFormData({
@@ -97,26 +134,37 @@ const SpendType = () => {
         }));
     };
 
-    {/*Usestate cho phần chọn màu */ }
-    const [selectedColor, setSelectedColor] = useState('');
-
-    const handleColorClick = (color: any) => {
-        setSelectedColor(color);
-    };
+    const isNumeric = (str: string) => {
+        if (typeof str !== "string") return false;
+        return !isNaN(Number(str)) && !isNaN(parseFloat(str));
+      };
+    
+      // Lọc các loại chi tiêu dựa trên từ khóa tìm kiếm
+      const filteredSpendTypes = spendTypes.filter((item) => {
+        const searchLower = searchTerm.toLowerCase();
+    
+        const matchesName = item.name.toLowerCase().includes(searchLower);
+    
+        const matchesAmount =
+          isNumeric(searchTerm) &&
+          (item.estimated.toString().includes(searchTerm) || item.spent.toString().includes(searchTerm));
+    
+        return matchesName || matchesAmount;
+      });
 
 
     return (
-        <div className="flex w-full h-full p-0 space-x-10">
+        <div className="flex w-full h-full p-0 space-x-10 tao-bg">
             {/* Sidebar Thêm loại chi tiêu */}
-            <div className="w-1/3 p-5 pink-bg rounded-lg">
-                <div className="h-[130px] mb-5 p-4 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
-                    <Image className="absolute right-0 top-0 pl-[220px] " src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
-                    <div className="absolute top-0 right-0 left-0 bottom-0 flex flex-col gap-4 px-8 py-4 z-[10]">
+            <div className="w-[25%] p-5 pink-bg rounded-lg">
+                <div className="h-[25%] mb-5 p-4 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
+                    <Image className="absolute right-0 top-0 pl-[70%] " src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
+                    <div className="absolute top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
                         <h2 className="text-md font-semibold">TỔNG SỐ TIỀN DỰ TÍNH</h2>
                         <div className="flex gap-5">
-                            <Image className="" src="/icons/spendtype/wallet.svg" alt="decoration" width={60} height={60} />
+                            <Image className="" src="/icons/spendtype/wallet.svg" alt="decoration" width={50} height={50} />
                             <div>
-                                <p className="text-2xl font-semibold">{totalEstimated.toLocaleString('vi-VN')} VND</p>
+                                <p className={styles.money}>{totalEstimated.toLocaleString('vi-VN')} VND</p>
                                 <p className="text-sm font-md">Tổng số tiền</p>
                             </div>
                         </div>
@@ -128,7 +176,6 @@ const SpendType = () => {
                     <h3 className="text-xl mb-3 font-bold">Thêm Loại Chi Tiêu</h3>
                     <form>
                         <div className="mb-3">
-                            <label className="">Tên loại chi tiêu</label>
                             <div className={styles.inputGroup}>
                                 <input
                                     type="text"
@@ -145,7 +192,6 @@ const SpendType = () => {
                         </div>
 
                         <div className="mb-3">
-                            <label className="block mb-1">Số tiền dự tính</label>
                             <div className={styles.inputGroup}>
                                 <input
                                     type="text"
@@ -161,50 +207,33 @@ const SpendType = () => {
                             </div>
                         </div>
 
-                        <div className="mb-3 ">
-                            <label className="block mb-1">Biểu tượng</label>
-                            <div className="grid grid-cols-6 gap-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-yellow-300">
-                                {/* Các biểu tượng (icon) */}
-                                <button type="button">🏠</button>
-                                <button type="button">🚗</button>
-                                <button type="button">🛍️</button>
-                                <button type="button">🍔</button>
-                                <button type="button">✈️</button>
-                                <button type="button">💡</button>
+                        <div className={styles.coolinput}>
+                            <label htmlFor="input" className={styles.text}>Biểu tượng</label>
+                            <div className={styles.colorOptions}>
+                              {iconOptions.map(icon => (
+                                <div
+                                  key={icon.id}
+                                  className={`${styles.colorItem} ${selectedIcon === icon.name ? styles.selected : ''}`}
+                                  onClick={() => setSelectedIcon(icon.name)}
+                                >
+                                  <span className={styles.colorName}>{icon.icon}</span>
+                                </div>
+                              ))}
                             </div>
                         </div>
 
-                        {/* <div className="mb-3">
-                            <label className="block mb-1">Màu sắc</label>
-                            <div className="grid grid-cols-6 gap-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-yellow-300">
-                                
-                                <button type="button" className="w-6 h-6 bg-red-500 rounded-lg "></button>
-                                <button type="button" className="w-6 h-6 bg-purple-500 rounded-lg"></button>
-                                <button type="button" className="w-6 h-6 bg-pink-500 rounded-lg"></button>
-                                <button type="button" className="w-6 h-6 bg-cyan-500 rounded-lg"></button>
-                                <button type="button" className="w-6 h-6 bg-green-500 rounded-lg"></button>
-                                <button type="button" className="w-6 h-6 bg-yellow-500 rounded-lg"></button>
-                            </div>
-                        </div> */}
-
-
-                        <div className="mb-3">
-                            <label className="block mb-1">Màu sắc</label>
-                            <div className="max-h-72 overflow-y-auto flex flex-col gap-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-yellow-300">
-                                {colors.map((row, rowIndex) => (
-                                    <div key={rowIndex} className="flex justify-around">
-                                        {row.map((color, index) => (
-                                            <div
-                                                key={index}
-                                                className={`w-12 h-12 rounded-lg cursor-pointer transition-all duration-200 ${selectedColor === color ? 'border-4 border-yellow-500' : 'border-0'}`}
-                                                style={{ backgroundColor: color }}
-                                                onClick={() => handleColorClick(color)}
-                                                onMouseEnter={(e) => e.currentTarget.style.border = '4px solid yellow'}
-                                                onMouseLeave={(e) => e.currentTarget.style.border = selectedColor === color ? '4px solid yellow' : 'none'}
-                                            ></div>
-                                        ))}
-                                    </div>
-                                ))}
+                        <div className={styles.coolinput}>
+                            <label htmlFor="input" className={styles.text}>Màu sắc</label>
+                            <div className={styles.colorOptions}>
+                              {colorOptions.map(color => (
+                                <div
+                                  key={color.id}
+                                  className={`${styles.colorItem} ${selectedColor === color.name ? styles.selected : ''}`}
+                                  onClick={() => setSelectedColor(color.name)}
+                                  style={{ backgroundColor: color.color }}
+                                >
+                                </div>
+                              ))}
                             </div>
                         </div>
 
@@ -216,78 +245,80 @@ const SpendType = () => {
             {/* Bảng các loại chi tiêu */}
             <div className="w-2/3 flex flex-col h-full">
                 <table>
-                    <tr>
-                        <th>
-                            <h2 className="text-2xl font-bold mb-5">Các Loại Chi Tiêu</h2>
-                        </th>
-                        <th className="pr-500">
-                            <div className="relative w-1/3 ">
-                                <input
-                                    type="text"
-                                    placeholder="Tìm kiếm"
-                                    className="w-full p-4 pl-10 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
-                                <span className="absolute left-3 top-3 text-gray-400">
-                                    🔍
-                                </span>
+                    <div className={styles.headtbl}>
+                        <p className={styles.titleTbl}>Các Loại Chi Tiêu</p>
+                        <div className={styles.search}>
+                            <input
+                                type="text"
+                                placeholder="Tìm kiếm"
+                                className={styles.searchTbl}
+                                value={searchTerm} 
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <div className={styles.iconOverlay }>
+                                <FontAwesomeIcon icon={faSearch} /> 
                             </div>
-                        </th>
-                    </tr>
+                        </div>
+
+                    </div>
                 </table>
-                <table className="min-w-full bg-white border rounded-lg">
+                <table className="min-w-full tao-bg">
                     <thead>
-                        <tr className="bg-gray-100">
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
-                        </tr>
+                      <tr className="bg-gray-100">
+                        <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
+                        <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
+                        <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
+                        <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
+                      </tr>
                     </thead>
-                    <tbody>
-                        {spendTypes.map((item, index) => (
-                            <tr key={index} className="border-b">
-                                <td className="py-3 px-4 flex items-center space-x-2">
-                                    <span className={`w-4 h-4 rounded-full`} style={{ backgroundColor: item.color }}></span>
-                                    <span>{item.icon} {item.name}</span>
-                                </td>
-                                <td className="py-3 px-4">{item.estimated.toLocaleString('vi-VN')} VND</td>
-                                <td className={`py-3 px-4 ${item.spent > item.estimated ? 'text-red-500' : 'text-green-500'}`}>
-                                    {item.spent.toLocaleString('vi-VN')} VND
-                                </td>
-                                <td className="py-3 px-4">
-                                    <button
-                                        className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 transition-opacity duration-100 hover:opacity-50"
-                                        onClick={() => handleEditClick(item)}
-                                    >
-                                        Sửa
-                                    </button>
-                                    <button
-                                        className="bg-red-500 text-white px-3 py-1 rounded transition-opacity duration-100 hover:opacity-50"
-                                        onClick={() => handleDeleteClick(item)}
-                                    >
-                                        Xóa
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                    <tbody className={styles.bodyTbl}>
+                      {filteredSpendTypes.map((item, index) => (
+                        <tr key={index} className="border-b">
+                          <td className="py-3 px-4 flex items-center space-x-2">
+                            <span className={`w-4 h-4 rounded-full`} style={{ backgroundColor: item.color }}></span>
+                            <span>{item.icon} {item.name}</span>
+                          </td>
+                          <td className="py-3 px-4">{item.estimated.toLocaleString("vi-VN")} VND</td>
+                          <td className={`py-3 px-4 ${item.spent > item.estimated ? "text-red-500" : "text-green-500"}`}>
+                            {item.spent.toLocaleString("vi-VN")} VND
+                          </td>
+                          <td className={styles.btnTble}>
+                                <button onClick={showModal} className={styles.editBtn}>
+                                    <FontAwesomeIcon icon={faPenToSquare } />
+                                </button>
+                                <button
+                                    className={styles.deleteBtn}
+                                    onClick={() => handleDeleteClick(item)}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCan} />
+                                </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                 </table>
             </div>
 
             {/* Modal xác nhận xóa */}
             {isDeleteModalOpen && (
-                <div className="w-full h-full fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
-                    <div className="bg-white w-700 h-700 p-6 rounded-lg">
-                        <h3 className="text-lg font-bold mb-4">Bạn có chắc chắn muốn xóa không?</h3>
-                        <p className="mb-4">Một khi đã xóa thì không thể khôi phục lại.</p>
-                        <div className="flex justify-end space-x-3">
+                <div className={styles.modalOverplay}>
+                    <div className={"bg-white w-[40%] h-[30%] p-6 rounded-lg"}>
+                        <div className={styles.headDeleMobal}>
+                            <Image src="/icons/logo.svg" alt="logo" width={70} height={70} />
+                            <div className={styles.titleDele}>
+                                <p className={styles.titleDeleMobal}>Bạn có chắc chắn muốn xóa không</p>
+                                <p>Một khi đã xóa thì không thể khôi phục lại.</p>
+                            </div>
+                        </div>
+                        <div className={styles.btnDeleMobal}>
                             <button
-                                className="bg-red-500 text-white px-4 py-2 rounded transition-opacity duration-100 hover:opacity-50"
+                                className={styles.btnCan}
                                 onClick={handleCancelDelete}
                             >
                                 Hủy bỏ
                             </button>
                             <button
-                                className="bg-green-500 text-white px-4 py-2 rounded transition-opacity duration-100 hover:opacity-50"
+                                className={styles.btnOk}
                                 onClick={handleConfirmDelete}
                             >
                                 Xác nhận
@@ -298,72 +329,78 @@ const SpendType = () => {
             )}
 
             {/* Modal chỉnh sửa loại chi tiêu */}
-            {isEditModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg w-1/3">
-                        <h3 className="text-lg font-bold mb-4">Chỉnh Sửa Loại Chi Tiêu</h3>
-                        <form>
-                            <div className="mb-4">
-                                <label className="block text-sm font-semibold">Tên loại chi tiêu</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={editFormData.name}
-                                    onChange={handleChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-semibold">Số tiền dự tính</label>
-                                <input
-                                    type="number"
-                                    name="estimated"
-                                    value={editFormData.estimated}
-                                    onChange={handleChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-semibold">Ký hiệu viết tắt</label>
-                                <input
-                                    type="text"
-                                    name="shortName"
-                                    value={editFormData.shortName}
-                                    onChange={handleChange}
-                                    className="w-full px-3 py-2 border rounded"
-                                />
-                            </div>
-                            {/* Biểu tượng và Màu sắc */}
-                            {/* Tương tự như phần icon và màu sắc */}
-                        </form>
-                        <div className="flex justify-end space-x-3 mt-4">
-                            <button
-                                className="bg-yellow-500 text-white px-4 py-2 rounded transition-opacity duration-100 hover:opacity-50"
-                                onClick={handleCancelEdit}
-                            >
-                                Hủy bỏ
-                            </button>
-                            <button
-                                className="bg-green-500 text-white px-4 py-2 rounded transition-opacity duration-100 hover:opacity-50"
-                                onClick={handleSaveEdit}
-                            >
-                                Lưu thông tin
-                            </button>
+            <Modal
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={null}
+                width="30%"
+                className={styles.mobalEditSpen}
+                styles={{
+                  content: {
+                    backgroundColor: '#fff5e2', // Ensure the content area has the desired background color
+                    borderRadius: '8px',
+                    marginTop: '-40px'
+                  },
+                  body: {
+                    backgroundColor: '#fff5e2', // Ensure the modal body has the desired background
+                  },
+                }}
+            >
+                <div className={styles.containerMobal}>
+                  <div className={styles.headMobal}>
+                    <Image src="/icons/logo.svg" alt="logo" width={50} height={50} />
+                    <p className={styles.titleMobal}>Chỉnh Sửa Loại Chi Tiêu</p>
+                  </div>
+                  <div className={styles.coolinput}>
+                    <label htmlFor="input" className={styles.text}>Tên loại chi tiêu</label>
+                    <input type="text" placeholder="Write here..." name="name" className={styles.inputMobal} />
+                  </div>
+                  <div className={styles.coolinput}>
+                    <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
+                    <input type="text" placeholder="Write here..." name="money" className={styles.inputMobal} />
+                  </div>
+                  <div className={styles.coolinput}>
+                    <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>
+                    <input type="text" placeholder="Write here..." name="symbol" className={styles.inputMobal} />
+                  </div>
+                  <div className={styles.coolinput}>
+                    <label htmlFor="input" className={styles.text}>Biểu tượng</label>
+                    <div className={styles.colorOptions}>
+                      {iconOptions.map(icon => (
+                        <div
+                          key={icon.id}
+                          className={`${styles.colorItem} ${selectedIcon === icon.name ? styles.selected : ''}`}
+                          onClick={() => setSelectedIcon(icon.name)}
+                        >
+                          <span className={styles.colorName}>{icon.icon}</span>
                         </div>
+                      ))}
                     </div>
+                  </div>
+                  <div className={styles.coolinput}>
+                    <label htmlFor="input" className={styles.text}>Màu sắc</label>
+                    <div className={styles.colorOptions}>
+                      {colorOptions.map(color => (
+                        <div
+                          key={color.id}
+                          className={`${styles.colorItem} ${selectedColor === color.name ? styles.selected : ''}`}
+                          onClick={() => setSelectedColor(color.name)}
+                          style={{ backgroundColor: color.color }}
+                        >
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.modalFooter}>
+                    <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
+                      Lưu thông tin
+                    </Button>
+                  </div>
                 </div>
-            )}
-
+            </Modal>
         </div>
     );
 };
 
 export default SpendType;
-
-
-
-
-
-
-
-
