@@ -1,7 +1,8 @@
 "use client";
 
 import { FaBeer } from 'react-icons/fa';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import styles from './spendtype.module.scss'
 
