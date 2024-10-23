@@ -3,20 +3,22 @@ $light_yellow: #FFC248;
 $light_pink: #FFF5E2;
 $brown: #494949;
 $light_brown: #452F02;
-:root{
-    --light-pink: #FFF5E2;
 
+:root {
+    --light-pink: #FFF5E2;
 }
+
+
 body {
     margin: 0;
     padding: 0;
 }
 
-.tao-bg{
+.tao-bg {
     background-color: #f6f6f6;
 }
 
-.pink-bg{
+.pink-bg {
     background-color: $light_pink;
 }
 
@@ -28,19 +30,19 @@ body {
     color: $light_yellow;
 }
 
-.dark-yellow-bg{
+.dark-yellow-bg {
     background-color: $dark_yellow;
 }
 
-.light-yellow-bg{
+.light-yellow-bg {
     background-color: $light_yellow;
 }
 
-.light-yellow-background{
+.light-yellow-background {
     background-color: $light_yellow;
 }
 
-.brown-background{
+.brown-background {
     background-color: $light_brown;
     border-radius: 100%;
     padding: 10px;
@@ -69,7 +71,7 @@ body {
     z-index: -100;
 }
 
-.icon{
+.icon {
     background-color: $light_yellow;
     padding: 10px;
     height: 40px;
@@ -77,7 +79,7 @@ body {
     border-radius: 100%;
 }
 
-.avatar{
+.avatar {
     height: 60px;
     width: 60px;
     border-radius: 100%;

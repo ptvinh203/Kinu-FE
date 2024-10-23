@@ -81,19 +81,19 @@
       border-radius: 10px;
       border: 1px #000000 solid;
       padding: 10px;
-
+      justify-content: flex-start; /* Align items to the left */
+      gap: 10px;
       .colorItem {
         display: flex;
-        width: 14%;
+        width: calc(100% / 5 - 10px);
         height: 30px;
         align-items: center;
         justify-content: center;
-        margin: 0 4px 4px 4px;
         border: 1px solid #ddd;
         border-radius: 8px;
         cursor: pointer;
         transition: background-color 0.3s;
-
+        
         &:hover {
           background-color: #f0f0f0;
         }
@@ -122,6 +122,7 @@
   .headtbl{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-top: 15px;
     padding-bottom: 10px;
     margin-bottom: 20px;
@@ -241,9 +242,8 @@
 
     .btnDeleMobal{
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin: 0 20px 0 20px;
+      gap: 20px;
 
       .btnCan{
         background-color: red;
