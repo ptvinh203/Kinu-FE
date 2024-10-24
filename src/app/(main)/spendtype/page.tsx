@@ -43,16 +43,12 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 const SpendType: React.FC = () => {
     const [spendTypes, setSpendTypes] = useState([
-        { name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: 'red', icon: { id: 1, name: "", svgUrl: "" } },
+        { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: 'red', icon: { id: 1, name: "", svgUrl: "" } },
     ]);
 
-    const colorOptions = [
-        { id: 1, name: 'Đỏ', color: '#FF0000' },
-        { id: 2, name: 'Xanh dương', color: '#0000FF' },
-        { id: 3, name: 'Xanh lá', color: '#00FF00' },
-        { id: 4, name: 'Vàng', color: '#FFFF00' },
-        { id: 5, name: 'Tím', color: '#800080' },
-    ];
+    const [colorOptions, setColorOptions] = useState([
+        { id: 1, name: 'Đỏ', colorCode: '#FF0000', spent: 0 },
+    ]);
 
     const icons = [
         { id: 1, icon: faDog, label: "Dog" },
@@ -85,8 +81,8 @@ const SpendType: React.FC = () => {
 
 
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-    const [selectedColor, setSelectedColor] = useState<string | null>(null);
-    const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+    const [selectedColor, setSelectedColor] = useState<number | null>(null);
+    const [selectedIcon, setSelectedIcon] = useState<number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -100,15 +96,16 @@ const SpendType: React.FC = () => {
     });
     const [spendType, setSpendType] = useState("");
     const [spendAmount, setSpendAmount] = useState("");
+    const [abbre, setAbbre] = useState("");
     const [loading, setLoading] = useState(true);  // State to handle loading
     const totalEstimated = loading ? spendTypes.reduce((total, item) => total + item.estimatedAmount, 0) : 0;
 
-    const [editId, setEditId] = useState<number>();
-    const [editType, setEditType] = useState<string | null>();
-    const [editSpendAmount, setEditSpendAmount] = useState<string | null>();
-    const [editAbbre, setEditAbbre] = useState<string | null>();
-    const [editColor, setEditColor] = useState<string | null>();
-    const [editIcon, setEditIcon] = useState<string | null>();
+    const [editId, setEditId] = useState<any>();
+    const [editType, setEditType] = useState<any>();
+    const [editSpendAmount, setEditSpendAmount] = useState<any>();
+    const [editAbbre, setEditAbbre] = useState<any>();
+    const [editColor, setEditColor] = useState<any>();
+    const [editIcon, setEditIcon] = useState<any>();
 
     const iconMapping: Record<string, IconDefinition> = {
         faDog: faDog,
@@ -173,16 +170,59 @@ const SpendType: React.FC = () => {
             setLoading(false);
         }
     };
+    
+    const fetchColor = async () => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/color`);
+
+            const data = response.data.data;  
+            
+            setColorOptions(data);  // Set the modified data to state
+        } catch (error) {
+            toast.error("Error fetching spend types.");
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    const fetchIcon = async () => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/icon`);
+            console.log("API Response: ", response.data); 
+
+            const data = response.data.data;
+            const updatedData = data.map((item: any) => ({
+                ...item,  // Spread the existing properties of the item
+                spent: 0  // Initialize `spent` to 0 or any value you want
+            }));
+            console.log(updatedData)
+
+            // setSpendTypes(updatedData);  // Set the modified data to state
+        } catch (error) {
+            console.error("Error fetching spend types:", error);
+            toast.error("Error fetching spend types.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     // useEffect to call API when component mounts
     useEffect(() => {
         fetchSpendTypes();
+        fetchColor();
+        fetchIcon();
     }, []);
 
-    const showModal = (id: number) => {
+    const showModal = (item : any) => {
+        console.log(item)
         setIsModalVisible(true);
-        setEditId(id)
+        setEditId(item.id)
+        setEditColor(item.color.id)
+        setEditIcon(item.icon.id)
+        setEditAbbre(item.abbreviation)
+        setEditSpendAmount(item.estimatedAmount)
+        setEditType(item.name)
     };
 
     const handleOk = () => {
@@ -196,6 +236,7 @@ const SpendType: React.FC = () => {
         })
             .then(res => {
                 toast.success("Sửa thành công");
+                fetchSpendTypes();
             })
             .catch(err => {
                 console.log(err)
@@ -208,7 +249,7 @@ const SpendType: React.FC = () => {
     };
 
     const handleDeleteClick = (item: any) => {
-        setSelectedItem(item);
+        setSelectedItem(item.id);
         setIsDeleteModalOpen(true);
     };
 
@@ -229,13 +270,14 @@ const SpendType: React.FC = () => {
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/type-sprinding/create`, {
             name: spendType,
             estimatedAmount: spendAmount,
-            abbreviation: "",
-            idIcon: selectedIcon,
-            idColor: selectedColor,
+            abbreviation: abbre,
+            iconId: selectedIcon?.toString(),
+            colorId: selectedColor?.toString(),
             userId,
         })
             .then(res => {
                 toast.success("Thêm thành công");
+                fetchSpendTypes();
             })
             .catch(err => {
                 console.log(err)
@@ -244,7 +286,16 @@ const SpendType: React.FC = () => {
     };
 
     const handleConfirmDelete = () => {
-        // setSpendTypes(spendTypes.filter((item) => item !== selectedItem));
+        axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/type-sprinding/delete/${selectedItem}`, {
+        })
+            .then(res => {
+                toast.success("Xóa thành công");
+                fetchSpendTypes();
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error("Xóa thất bại: " + err.response.data.message);
+            })
         setIsDeleteModalOpen(false);
         setSelectedItem(null);
     };
@@ -352,14 +403,30 @@ const SpendType: React.FC = () => {
                             </div>
                         </div>
 
+                        <div className="mb-3">
+                            <div className={styles.inputGroup}>
+                                <input
+                                    type="text"
+                                    value={abbre}
+                                    onChange={(e) => setAbbre(e.target.value)}
+                                    className={styles.inputLo}
+                                    required
+                                    autoComplete="off"
+                                />
+                                <label htmlFor="email" className={styles.text}>
+                                    Ký hiệu viết tắt
+                                </label>
+                            </div>
+                        </div>
+
                         <div className={styles.coolinput}>
                             <label htmlFor="input" className={styles.text}>Biểu tượng</label>
                             <div className={styles.colorOptions}>
                                 {icons.map(icon => (
                                     <div
                                         key={icon.id}
-                                        className={`${styles.colorItem} ${selectedIcon === icon.label ? styles.selected : ''}`}
-                                        onClick={() => setSelectedIcon(icon.label)}
+                                        className={`${styles.colorItem} ${selectedIcon === icon.id ? styles.selected : ''}`}
+                                        onClick={() => setSelectedIcon(icon.id)}
                                     >
                                         <div className={styles.colorName}>
                                             <FontAwesomeIcon icon={icon.icon} />
@@ -375,9 +442,9 @@ const SpendType: React.FC = () => {
                                 {colorOptions.map(color => (
                                     <div
                                         key={color.id}
-                                        className={`${styles.colorItem} ${selectedColor === color.name ? styles.selected : ''}`}
-                                        onClick={() => setSelectedColor(color.name)}
-                                        style={{ backgroundColor: color.color }}
+                                        className={`${styles.colorItem} ${selectedColor === color.id ? styles.selected : ''}`}
+                                        onClick={() => setSelectedColor(color.id)}
+                                        style={{ backgroundColor: color.colorCode }}
                                     >
                                     </div>
                                 ))}
@@ -422,7 +489,7 @@ const SpendType: React.FC = () => {
                         {filteredSpendTypes.map((item, index) => (
                             <tr key={index} className="border-b">
                                 <td className="py-3 px-4 flex items-center space-x-2">
-                                    <span className={`w-4 h-4 rounded-full`} style={{ backgroundColor: item.color }}></span>
+                                    {/* <span className={`w-4 h-4 rounded-full`} style={{ backgroundColor: item.color }}></span> */}
                                     <span><FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} />  {item.name}</span>
                                 </td>
                                 <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
@@ -430,7 +497,7 @@ const SpendType: React.FC = () => {
                                     {item.spent.toLocaleString("vi-VN")} VND
                                 </td>
                                 <td className={styles.btnTble}>
-                                    <button onClick={() => showModal(item.id)}
+                                    <button onClick={() => showModal(item)}
                                         className={styles.editBtn}>
                                         <FontAwesomeIcon icon={faPenToSquare} />
                                     </button>
@@ -502,15 +569,15 @@ const SpendType: React.FC = () => {
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Tên loại chi tiêu</label>
-                        <input type="text" placeholder="Write here..." onChange={(e) => setEditType(e.target.value)} name="name" className={styles.inputMobal} />
+                        <input type="text" value={editType} placeholder="Write here..." onChange={(e) => setEditType(e.target.value)} name="name" className={styles.inputMobal} />
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
-                        <input type="text" placeholder="Write here..." onChange={(e) => setEditSpendAmount(e.target.value)} name="money" className={styles.inputMobal} />
+                        <input type="text" value={editSpendAmount} placeholder="Write here..." onChange={(e) => setEditSpendAmount(e.target.value)} name="money" className={styles.inputMobal} />
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>
-                        <input type="text" placeholder="Write here..." onChange={(e) => setEditAbbre(e.target.value)}
+                        <input type="text" value={editAbbre} placeholder="Write here..." onChange={(e) => setEditAbbre(e.target.value)}
                             name="symbol" className={styles.inputMobal} />
                     </div>
                     <div className={styles.coolinput}>
@@ -518,9 +585,9 @@ const SpendType: React.FC = () => {
                         <div className={styles.colorOptions}>
                             {icons.map(icon => (
                                 <div
-                                    className={`${styles.colorItem} ${editIcon === icon.label ? styles.selected : ''}`}
+                                    className={`${styles.colorItem} ${editIcon === icon.id ? styles.selected : ''}`}
                                     key={icon.id}
-                                    onClick={() => { console.log("edit icon"); setEditIcon(icon.label) }}
+                                    onClick={() => { setEditIcon(icon.id) }}
                                 >
                                     <FontAwesomeIcon icon={icon.icon} />
                                 </div>
@@ -533,9 +600,9 @@ const SpendType: React.FC = () => {
                             {colorOptions.map(color => (
                                 <div
                                     key={color.id}
-                                    className={`${styles.colorItem} ${editColor === color.name ? styles.selected : ''}`}
-                                    onClick={() => { setEditColor(color.name) }}
-                                    style={{ backgroundColor: color.color }}
+                                    className={`${styles.colorItem} ${editColor === color.id ? styles.selected : ''}`}
+                                    onClick={() => { setEditColor(color.id) }}
+                                    style={{ backgroundColor: color.colorCode }}
                                 >
                                 </div>
                             ))}
