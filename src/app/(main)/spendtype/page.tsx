@@ -353,10 +353,10 @@ const SpendType: React.FC = () => {
         <div className="flex w-full h-full p-0 space-x-10 tao-bg">
             {/* Sidebar Thêm loại chi tiêu */}
             <div className="w-[25%] p-5 pink-bg rounded-lg">
-                <div className="mb-5 p-4 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
+                <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
                     <Image className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]" src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
                     <div className="top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
-                        <h2 className="text-md font-semibold">TỔNG SỐ TIỀN DỰ TÍNH</h2>
+                        <h2 className="text-[13px] font-semibold">TỔNG SỐ TIỀN DỰ TÍNH</h2>
                         <div className="flex gap-5">
                             <Image className="" src="/icons/spendtype/wallet.svg" alt="decoration" width={50} height={50} />
                             <div>
@@ -369,7 +369,7 @@ const SpendType: React.FC = () => {
                 </div>
 
                 <div>
-                    <h3 className="text-lg mb-3 font-bold">Thêm Loại Chi Tiêu</h3>
+                    <h3 className="text-[15px] mb-3 font-bold">Thêm Loại Chi Tiêu</h3>
                     <form>
                         <div className="mb-3">
                             <div className={styles.inputGroup}>
@@ -451,7 +451,7 @@ const SpendType: React.FC = () => {
                             </div>
                         </div>
 
-                        <div onClick={createNewSpendType} className="mt-3 w-full p-2 light-yellow-bg text-white rounded transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer">Thêm loại chi tiêu</div>
+                        <div onClick={createNewSpendType} className="mt-3 w-full p-2 light-yellow-bg text-white rounded-[0.78rem] transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer">Thêm loại chi tiêu</div>
                     </form>
                 </div>
             </div>
@@ -476,42 +476,44 @@ const SpendType: React.FC = () => {
 
                     </div>
                 </table>
-                <table className="min-w-full tao-bg">
-                    <thead>
-                        <tr className="bg-gray-100">
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
-                            <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody className={styles.bodyTbl}>
-                        {filteredSpendTypes.map((item, index) => (
-                            <tr key={index} className="border-b">
-                                <td className="py-3 px-4 flex items-center space-x-2">
-                                    {/* <span className={`w-4 h-4 rounded-full`} style={{ backgroundColor: item.color }}></span> */}
-                                    <span><FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} />  {item.name}</span>
-                                </td>
-                                <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
-                                <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
-                                    {item.spent.toLocaleString("vi-VN")} VND
-                                </td>
-                                <td className={styles.btnTble}>
-                                    <button onClick={() => showModal(item)}
-                                        className={styles.editBtn}>
-                                        <FontAwesomeIcon icon={faPenToSquare} />
-                                    </button>
-                                    <button
-                                        className={styles.deleteBtn}
-                                        onClick={() => handleDeleteClick(item)}
-                                    >
-                                        <FontAwesomeIcon icon={faTrashCan} />
-                                    </button>
-                                </td>
+                <div className={styles.tableContainer}>
+                    <table className="min-w-full tao-bg">
+                        <thead>
+                            <tr className="bg-gray-100">
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className={styles.bodyTbl}>
+                            {filteredSpendTypes.map((item, index) => (
+                                <tr key={index} className="border-b hover:bg-blue-200">
+                                    <td className="py-3 px-4 flex items-center space-x-2">
+                                        <div className={styles.nameIcon}>
+                                            <div style={{ backgroundColor: item.color.colorCode }} className={styles.bgrIcon}>
+                                                <FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} className={styles.iconTable} />
+                                            </div>
+                                            <p>{item.name}</p>
+                                        </div>
+                                    </td>
+                                    <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
+                                    <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
+                                        {item.spent.toLocaleString("vi-VN")} VND
+                                    </td>
+                                    <td className={styles.btnTble}>
+                                        <button onClick={() => showModal(item)} className={styles.editBtn}>
+                                            <FontAwesomeIcon icon={faPenToSquare} />
+                                        </button>
+                                        <button className={styles.deleteBtn} onClick={() => handleDeleteClick(item)}>
+                                            <FontAwesomeIcon icon={faTrashCan} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* Modal xác nhận xóa */}

@@ -6,7 +6,7 @@
 
     .inputLo {
       font-size: 100%;
-      padding: 0.8em;
+      padding: 0.5em;
       outline: none;
       border: 1px solid rgb(0, 0, 0);
       background-color: transparent;
@@ -18,7 +18,7 @@
       font-size: 100%;
       position: absolute;
       left: 0;
-      padding: 0.8em;
+      padding: 0.5em;
       margin-left: 0.5em;
       pointer-events: none;
       transition: all 0.3s ease;
@@ -75,7 +75,8 @@
 
     .colorOptions {
       display: flex;
-      // justify-content: center;
+      overflow-y: auto;
+      max-height: 100px;
       width: 100%;
       flex-wrap: wrap;
       border-radius: 10px;
@@ -83,6 +84,7 @@
       padding: 10px;
       justify-content: flex-start; /* Align items to the left */
       gap: 10px;
+      
       .colorItem {
         display: flex;
         width: calc(100% / 5 - 10px);
@@ -157,10 +159,6 @@
         pointer-events: none;
       }
     }
-  }
-
-  .bodyTbl{
-    border-style: none;
   }
 
   .headMobal {
@@ -243,6 +241,7 @@
     .btnDeleMobal{
       display: flex;
       align-items: center;
+      padding-left: 15px;
       gap: 20px;
 
       .btnCan{
@@ -265,3 +264,38 @@
     font-size: 110%;
     font-weight: bold;
   }
+
+  .tableContainer {
+    display: block;
+    max-height: 72%;
+    overflow-y: auto;
+  }
+  
+  .bodyTbl {
+    border-style: none;
+  }
+  
+  .bodyTbl tr:hover {
+    background-color: #fd3b003a; 
+    border-radius: 10px;
+  }
+  
+  .nameIcon {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .bgrIcon {
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .iconTable {
+    color: #fff;
+  }
+  
