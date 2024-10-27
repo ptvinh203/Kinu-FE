@@ -275,14 +275,16 @@
     border-style: none;
   }
   
-  .bodyTbl tr:hover {
-    background-color: #fd3b003a; 
-    border-radius: 10px;
-  }
+  // .bodyTbl tr:hover {
+  //   background-color: #fd3b003a; 
+  //   border-radius: 10px;
+  // }
   
   .nameIcon {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    align-items: center;
   }
   
   .bgrIcon {

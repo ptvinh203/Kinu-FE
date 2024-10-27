@@ -43,7 +43,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 const SpendType: React.FC = () => {
     const [spendTypes, setSpendTypes] = useState([
-        { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: 'red', icon: { id: 1, name: "", svgUrl: "" } },
+        { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
     ]);
 
     const [colorOptions, setColorOptions] = useState([
@@ -170,13 +170,13 @@ const SpendType: React.FC = () => {
             setLoading(false);
         }
     };
-    
+
     const fetchColor = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/color`);
 
-            const data = response.data.data;  
-            
+            const data = response.data.data;
+
             setColorOptions(data);  // Set the modified data to state
         } catch (error) {
             toast.error("Error fetching spend types.");
@@ -184,11 +184,11 @@ const SpendType: React.FC = () => {
             setLoading(false);
         }
     };
-    
+
     const fetchIcon = async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/icon`);
-            console.log("API Response: ", response.data); 
+            console.log("API Response: ", response.data);
 
             const data = response.data.data;
             const updatedData = data.map((item: any) => ({
@@ -214,7 +214,7 @@ const SpendType: React.FC = () => {
         fetchIcon();
     }, []);
 
-    const showModal = (item : any) => {
+    const showModal = (item: any) => {
         console.log(item)
         setIsModalVisible(true);
         setEditId(item.id)
@@ -352,7 +352,7 @@ const SpendType: React.FC = () => {
     return (
         <div className="flex w-full h-full p-0 space-x-10 tao-bg">
             {/* Sidebar Thêm loại chi tiêu */}
-            <div className="w-[25%] p-5 pink-bg rounded-lg">
+            <div className="w-[25%] p-5 pink-bg rounded-lg h-full">
                 <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
                     <Image className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]" src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
                     <div className="top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
@@ -487,9 +487,33 @@ const SpendType: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className={styles.bodyTbl}>
+                            <tr key={-1} className="relative">
+                                <div className="absolute w-full h-full hover:bg-[#fd3b003a] rounded-[10px]"></div>
+                                <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
+                                    <div className={styles.nameIcon}>
+                                        <div className={`${styles.bgrIcon} bg-[#eeeeee]`}>
+                                            <FontAwesomeIcon icon={faDog} className={styles.iconTable} />
+                                        </div>
+                                        <p>Mặc định</p>
+                                    </div>
+                                </td>
+                                {/* <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
+                                <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
+                                    {item.spent.toLocaleString("vi-VN")} VND
+                                </td>
+                                <td className={styles.btnTble}>
+                                    <button onClick={() => showModal(item)} className={styles.editBtn}>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                    </button>
+                                    <button className={styles.deleteBtn} onClick={() => handleDeleteClick(item)}>
+                                        <FontAwesomeIcon icon={faTrashCan} />
+                                    </button>
+                                </td> */}
+                            </tr>
                             {filteredSpendTypes.map((item, index) => (
-                                <tr key={index} className="border-b hover:bg-blue-200">
-                                    <td className="py-3 px-4 flex items-center space-x-2">
+                                <tr key={index} className="relative">
+                                    <div className="absolute w-full h-full hover:bg-[#fd3b003a] rounded-[10px]"></div>
+                                    <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                         <div className={styles.nameIcon}>
                                             <div style={{ backgroundColor: item.color.colorCode }} className={styles.bgrIcon}>
                                                 <FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} className={styles.iconTable} />
