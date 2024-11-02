@@ -32,7 +32,25 @@ import {
     faFutbol,
     faGolfBallTee,
     faFootball,
-    faBicycle
+    faBicycle,
+    faHouse, faUser, faCheck, faDownload, faImage, faBars, faEnvelope,
+    faMusic, faWandMagicSparkles, faHeart, faArrowRight,
+    faCircleXmark, faBomb, faPoo, faCameraRetro, faXmark, faCloud,
+    faComment, faCaretUp, faTruckFast, faPenNib, faArrowUp, faHippo,
+    faFaceSmile, faCalendarDays, faPaperclip, faShieldHalved,
+    faFile, faBell, faClipboard, faFilter, faCircleInfo, faArrowUpFromBracket,
+    faBolt, faCar, faGhost, faCircleUser, faPen, faUmbrella,
+    faGift, faFilm, faList, faGear, faTrash, faCircleUp, faCircleDown, faInbox, faRotateRight, faLock, faHeadphones,
+    faBarcode, faTag, faBook, faBookmark, faPrint, faCamera,
+    faFont, faCircleHalfStroke, faDroplet, faShareFromSquare, faPlus,
+    faMinus, faShare, faCircleExclamation, faFire, faEye, faEyeSlash,
+    faPlane, faMagnet, faHand, faFolder, faFolderOpen, faMoneyBill, faThumbsUp, faThumbsDown, faComments, faLemon, faKey, faThumbtack,
+    faGears, faPaperPlane, faCode, faGlobe, faTruck, faCity,
+    faTicket, faTree, faWifi, faPaintRoller, faSliders, faBrush,
+    faHashtag, faFlask, faBriefcase, faCompass, faDumpsterFire, faPerson, faPersonDress,
+    faAddressBook, faBath, faHandshake, faSnowflake,
+    faRightToBracket, faEarthAmericas, faCloudArrowUp, faBinoculars, faPalette,
+    faLayerGroup, faUsers, faGamepad, faBusinessTime
 } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './spendtype.module.scss'
@@ -40,6 +58,7 @@ import { successNotification } from "../../../components/Notification/index"
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { userInfo } from 'os';
 
 const SpendType: React.FC = () => {
     const [spendTypes, setSpendTypes] = useState([
@@ -50,34 +69,9 @@ const SpendType: React.FC = () => {
         { id: 1, name: 'Đỏ', colorCode: '#FF0000', spent: 0 },
     ]);
 
-    const icons = [
-        { id: 1, icon: faDog, label: "Dog" },
-        { id: 2, icon: faGuitar, label: "Guitar" },
-        { id: 3, icon: faMagnifyingGlass, label: "Search" },
-        { id: 4, icon: faPhone, label: "Phone" },
-        { id: 5, icon: faCartShopping, label: "Shopping Cart" },
-        { id: 6, icon: faCarSide, label: "Car Side" },
-        { id: 7, icon: faPlaneDeparture, label: "Plane" },
-        { id: 8, icon: faPizzaSlice, label: "Pizza" },
-        { id: 9, icon: faBurger, label: "Burger" },
-        { id: 10, icon: faCheese, label: "Cheese" },
-        { id: 11, icon: faIceCream, label: "Ice Cream" },
-        { id: 12, icon: faBowlFood, label: "Bowl of Food" },
-        { id: 13, icon: faBreadSlice, label: "Bread" },
-        { id: 14, icon: faMugHot, label: "Mug" },
-        { id: 15, icon: faShip, label: "Ship" },
-        { id: 16, icon: faVideo, label: "Video" },
-        { id: 17, icon: faStar, label: "Star" },
-        { id: 18, icon: faShirt, label: "Shirt" },
-        { id: 19, icon: faMartiniGlass, label: "Martini Glass" },
-        { id: 20, icon: faVolleyball, label: "Volleyball" },
-        { id: 21, icon: faBaseballBatBall, label: "Baseball" },
-        { id: 22, icon: faTableTennisPaddleBall, label: "Table Tennis" },
-        { id: 23, icon: faFutbol, label: "Football" },
-        { id: 24, icon: faGolfBallTee, label: "Golf" },
-        { id: 25, icon: faFootball, label: "American Football" },
-        { id: 26, icon: faBicycle, label: "Bicycle" },
-    ];
+    const [icons, setIcon] = useState([
+        { id: 1, name: faDog, svgUrl: "Dog", spent: 0 },
+    ]);
 
 
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
@@ -95,7 +89,7 @@ const SpendType: React.FC = () => {
         color: '',
     });
     const [spendType, setSpendType] = useState("");
-    const [spendAmount, setSpendAmount] = useState("");
+    const [spendAmount, setSpendAmount] = useState<any>();
     const [abbre, setAbbre] = useState("");
     const [loading, setLoading] = useState(true);  // State to handle loading
     const totalEstimated = loading ? spendTypes.reduce((total, item) => total + item.estimatedAmount, 0) : 0;
@@ -108,32 +102,143 @@ const SpendType: React.FC = () => {
     const [editIcon, setEditIcon] = useState<any>();
 
     const iconMapping: Record<string, IconDefinition> = {
-        faDog: faDog,
-        faGuitar: faGuitar,
-        faMagnifyingGlass: faMagnifyingGlass,
-        faPhone: faPhone,
-        faCartShopping: faCartShopping,
-        faCarSide: faCarSide,
-        faPlaneDeparture: faPlaneDeparture,
-        faPizzaSlice: faPizzaSlice,
-        faBurger: faBurger,
-        faCheese: faCheese,
-        faIceCream: faIceCream,
-        faBowlFood: faBowlFood,
-        faBreadSlice: faBreadSlice,
-        faMugHot: faMugHot,
-        faShip: faShip,
-        faVideo: faVideo,
-        faStar: faStar,
-        faShirt: faShirt,
-        faMartiniGlass: faMartiniGlass,
-        faVolleyball: faVolleyball,
-        faBaseballBatBall: faBaseballBatBall,
-        faTableTennisPaddleBall: faTableTennisPaddleBall,
-        faFutbol: faFutbol,
-        faGolfBallTee: faGolfBallTee,
-        faFootball: faFootball,
-        faBicycle: faBicycle,
+        faDog,
+        faGuitar,
+        faMagnifyingGlass,
+        faPhone,
+        faCartShopping,
+        faCarSide,
+        faPlaneDeparture,
+        faPizzaSlice,
+        faBurger,
+        faCheese,
+        faIceCream,
+        faBowlFood,
+        faBreadSlice,
+        faMugHot,
+        faShip,
+        faVideo,
+        faStar,
+        faShirt,
+        faMartiniGlass,
+        faVolleyball,
+        faBaseballBatBall,
+        faTableTennisPaddleBall,
+        faFutbol,
+        faGolfBallTee,
+        faFootball,
+        faBicycle,
+        faHouse, 
+        faUser, 
+        faCheck, 
+        faDownload, 
+        faImage, 
+        faBars, 
+        faEnvelope,
+        faMusic, 
+        faWandMagicSparkles, 
+        faHeart, 
+        faArrowRight,
+        faCircleXmark, 
+        faBomb, 
+        faPoo, 
+        faCameraRetro, 
+        faXmark, 
+        faCloud,
+        faComment, 
+        faCaretUp, 
+        faTruckFast, 
+        faPenNib, 
+        faArrowUp, 
+        faHippo,
+        faFaceSmile, 
+        faCalendarDays, 
+        faPaperclip, 
+        faShieldHalved,
+        faFile, 
+        faBell, 
+        faClipboard, 
+        faFilter, 
+        faCircleInfo, 
+        faArrowUpFromBracket,
+        faBolt, 
+        faCar, 
+        faGhost, 
+        faCircleUser, 
+        faPen, 
+        faUmbrella,
+        faGift, 
+        faFilm, 
+        faList, 
+        faGear, 
+        faTrash, 
+        faCircleUp, 
+        faCircleDown, 
+        faInbox, 
+        faRotateRight, 
+        faLock, 
+        faHeadphones,
+        faBarcode, 
+        faTag, 
+        faBook, 
+        faBookmark, 
+        faPrint, 
+        faCamera,
+        faFont, 
+        faCircleHalfStroke, 
+        faDroplet, 
+        faShareFromSquare, 
+        faPlus,
+        faMinus, 
+        faShare, 
+        faCircleExclamation, 
+        faFire, 
+        faEye, 
+        faEyeSlash,
+        faPlane, 
+        faMagnet, 
+        faHand, 
+        faFolder, 
+        faFolderOpen, 
+        faMoneyBill, 
+        faThumbsUp, 
+        faThumbsDown, 
+        faComments, 
+        faLemon, 
+        faKey, 
+        faThumbtack,
+        faGears, 
+        faPaperPlane, 
+        faCode, 
+        faGlobe, 
+        faTruck, 
+        faCity,
+        faTicket, 
+        faTree, 
+        faWifi, 
+        faPaintRoller, 
+        faSliders, 
+        faBrush,
+        faHashtag, 
+        faFlask, 
+        faBriefcase, 
+        faCompass, 
+        faDumpsterFire, 
+        faPerson, 
+        faPersonDress,
+        faAddressBook, 
+        faBath, 
+        faHandshake, 
+        faSnowflake,
+        faRightToBracket, 
+        faEarthAmericas, 
+        faCloudArrowUp, 
+        faBinoculars, 
+        faPalette,
+        faLayerGroup, 
+        faUsers, 
+        faGamepad, 
+        faBusinessTime
     };
 
     // Helper function to get the icon safely
@@ -152,7 +257,8 @@ const SpendType: React.FC = () => {
     const fetchSpendTypes = async () => {
         try {
             // Fetch data from API
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/type-sprinding`);
+            const userId = localStorage.getItem('userId');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/type-sprinding?userId=${userId}`);
             console.log("API Response: ", response.data);  // Log the response data
 
             const data = response.data.data;
@@ -164,8 +270,7 @@ const SpendType: React.FC = () => {
 
             setSpendTypes(updatedData);  // Set the modified data to state
         } catch (error) {
-            console.error("Error fetching spend types:", error);
-            toast.error("Error fetching spend types.");
+
         } finally {
             setLoading(false);
         }
@@ -179,7 +284,6 @@ const SpendType: React.FC = () => {
 
             setColorOptions(data);  // Set the modified data to state
         } catch (error) {
-            toast.error("Error fetching spend types.");
         } finally {
             setLoading(false);
         }
@@ -197,10 +301,8 @@ const SpendType: React.FC = () => {
             }));
             console.log(updatedData)
 
-            // setSpendTypes(updatedData);  // Set the modified data to state
+            setIcon(updatedData);  // Set the modified data to state
         } catch (error) {
-            console.error("Error fetching spend types:", error);
-            toast.error("Error fetching spend types.");
         } finally {
             setLoading(false);
         }
@@ -226,13 +328,25 @@ const SpendType: React.FC = () => {
     };
 
     const handleOk = () => {
+        if (editType === ""){
+            toast.error('Loại chi tiêu trống');
+            return;
+        }
+        if (editSpendAmount === null || editSpendAmount === 0){
+            toast.error('Số tiền dự tính không hợp lệ');
+            return;
+        }
+        if (editAbbre === ""){
+            toast.error('Ký hiệu viết tắt trống');
+            return;
+        }
         setIsModalVisible(false);
         axios.put(`${process.env.NEXT_PUBLIC_API_URL}/type-sprinding/update/${editId}`, {
             name: editType,
             estimatedAmount: editSpendAmount,
             abbreviation: editAbbre,
-            idIcon: editIcon,
-            idColor: editColor,
+            iconId: editIcon,
+            colorId: editColor,
         })
             .then(res => {
                 toast.success("Sửa thành công");
@@ -266,6 +380,26 @@ const SpendType: React.FC = () => {
     };
 
     const createNewSpendType = () => {
+        if (spendType === ""){
+            toast.error('Vui lòng nhập loại chi tiêu')
+            return
+        }
+        if (abbre === ""){
+            toast.error('Vui lòng nhập ký hiệu viết tắt')
+            return
+        }
+        if (spendAmount == null || spendAmount === 0){
+            toast.error('Vui lòng nhập số tiền dự tính')
+            return
+        }
+        if (selectedColor === null){
+            toast.error('Vui lòng chọn màu')
+            return
+        }
+        if (selectedIcon === null){
+            toast.error('Vui lòng chọn biểu tượng')
+            return
+        }
         const userId = localStorage.getItem('userId')
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/type-sprinding/create`, {
             name: spendType,
@@ -391,8 +525,12 @@ const SpendType: React.FC = () => {
                             <div className={styles.inputGroup}>
                                 <input
                                     type="text"
-                                    value={spendAmount}
-                                    onChange={(e) => setSpendAmount(e.target.value)}
+                                    value={Math.round(spendAmount != null ? spendAmount : 0).toLocaleString('vi-VN')}
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
+                                        setSpendAmount(Number(value)); // Store as a number
+                                    }}
+                                    onBlur={() => setSpendAmount(Math.round(spendAmount != null ? spendAmount : 0))}
                                     className={styles.inputLo}
                                     required
                                     autoComplete="off"
@@ -429,7 +567,7 @@ const SpendType: React.FC = () => {
                                         onClick={() => setSelectedIcon(icon.id)}
                                     >
                                         <div className={styles.colorName}>
-                                            <FontAwesomeIcon icon={icon.icon} />
+                                            <FontAwesomeIcon icon={getIconFromSvgUrl(icon.svgUrl)} />
                                         </div>
                                     </div>
                                 ))}
@@ -487,8 +625,8 @@ const SpendType: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className={styles.bodyTbl}>
-                            <tr key={-1} className="relative">
-                                <div className="absolute w-full h-full hover:bg-[#fd3b003a] rounded-[10px]"></div>
+                            <tr key={-1} className="relative hover:bg-[#fd3b003a] rounded-[10px] w-full">
+                                <div className="absolute w-full h-full"></div>
                                 <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                     <div className={styles.nameIcon}>
                                         <div className={`${styles.bgrIcon} bg-[#eeeeee]`}>
@@ -497,6 +635,9 @@ const SpendType: React.FC = () => {
                                         <p>Mặc định</p>
                                     </div>
                                 </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 {/* <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
                                 <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
                                     {item.spent.toLocaleString("vi-VN")} VND
@@ -510,9 +651,8 @@ const SpendType: React.FC = () => {
                                     </button>
                                 </td> */}
                             </tr>
-                            {filteredSpendTypes.map((item, index) => (
-                                <tr key={index} className="relative">
-                                    <div className="absolute w-full h-full hover:bg-[#fd3b003a] rounded-[10px]"></div>
+                            {filteredSpendTypes.slice(1).map((item, index) => (
+                                <tr key={index} className="relative hover:bg-[#fd3b003a] rounded-[10px]">
                                     <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                         <div className={styles.nameIcon}>
                                             <div style={{ backgroundColor: item.color.colorCode }} className={styles.bgrIcon}>
@@ -521,9 +661,9 @@ const SpendType: React.FC = () => {
                                             <p>{item.name}</p>
                                         </div>
                                     </td>
-                                    <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
+                                    <td className="py-3 px-4">{Math.round(item.estimatedAmount).toLocaleString("vi-VN")} VND</td>
                                     <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
-                                        {item.spent.toLocaleString("vi-VN")} VND
+                                        {Math.round(item.spent).toLocaleString("vi-VN")} VND
                                     </td>
                                     <td className={styles.btnTble}>
                                         <button onClick={() => showModal(item)} className={styles.editBtn}>
@@ -599,7 +739,13 @@ const SpendType: React.FC = () => {
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
-                        <input type="text" value={editSpendAmount} placeholder="Write here..." onChange={(e) => setEditSpendAmount(e.target.value)} name="money" className={styles.inputMobal} />
+                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..." 
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
+                            setEditSpendAmount(Number(value)); // Store as a number
+                        }}
+                        onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
+                        name="money" className={styles.inputMobal} />
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>
@@ -615,7 +761,7 @@ const SpendType: React.FC = () => {
                                     key={icon.id}
                                     onClick={() => { setEditIcon(icon.id) }}
                                 >
-                                    <FontAwesomeIcon icon={icon.icon} />
+                                    <FontAwesomeIcon icon={getIconFromSvgUrl(icon.svgUrl)} />
                                 </div>
                             ))}
                         </div>

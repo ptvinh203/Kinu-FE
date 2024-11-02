@@ -30,7 +30,7 @@
       transform: translateY(-50%) scale(.9);
       margin: 0;
       margin-left: 1.3em;
-      padding: 0.4em;
+      padding: 0.2em;
       background-color: var(--light-pink);
     }
 
@@ -76,7 +76,7 @@
     .colorOptions {
       display: flex;
       overflow-y: auto;
-      max-height: 100px;
+      max-height: 130px;
       width: 100%;
       flex-wrap: wrap;
       border-radius: 10px;

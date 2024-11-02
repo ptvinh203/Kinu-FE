@@ -5,6 +5,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import styles from "./login.module.scss";
 import axios from "axios";
 import { useRouter } from 'next/navigation'
+import { toast } from "react-toastify";
 
 const Login = () => {
     const router = useRouter()
@@ -39,6 +40,7 @@ const Login = () => {
         })
         .catch(err => {
             console.log(err)
+            toast.error(err.response.data.message)
         })
     };
 
