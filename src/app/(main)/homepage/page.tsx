@@ -5,7 +5,7 @@ import { faSearch, faTrashCan, faPenToSquare, faHouse, faCar, faCartShopping } f
 import { Button, Modal } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
-import styles from './spendtype.module.scss'
+import styles from './homepage.module.scss'
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { CarOutlined, HomeOutlined } from '@ant-design/icons';
@@ -243,6 +243,8 @@ const SpendType: React.FC = () => {
         { value: 'Ăn uống', label: 'Ăn uống' },
     ];
 
+    const value = -9000000.0;
+
     if (loading) {
         return <p>Loading spend types...</p>;
     }
@@ -266,171 +268,128 @@ const SpendType: React.FC = () => {
                 </div>
 
                 <div>
-                    <h3 className="text-[15px] mb-3 font-bold">Thêm Khoản Chi Tiêu</h3>
-                    <form>
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="text"
-                                    value={spendName} // Sử dụng spendName thay vì spendType
-                                    onChange={(e) => setSpendName(e.target.value)} // Cập nhật state cho spendName
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                />
-                                <label htmlFor="spendName" className={styles.text}>
-                                    Tên khoản chi tiêu
-                                </label>
+                    <h3 className="text-[15px] mb-3 font-bold" style={{ color: 'red' }}>Các Khoản Chi Gần Nhất</h3>
+                    <hr />
+                    <div className={styles.historyToday}>
+                        <p className={styles.title}>Hôm nay</p>
+                        <div className={styles.item}>
+                            <div className={styles.icon}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                            </div>
+                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
+                                <p>{value.toLocaleString()}</p>
+                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
                             </div>
                         </div>
-            
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                            <select
-                                value={spendType}
-                                onChange={(e) => {
-                                    const value = e.target.value; // Lấy giá trị được chọn
-                                    setSpendType(value); // Cập nhật state cho spendType
-                                    setSpendAmount(0); // Đặt lại số tiền khi loại chi tiêu thay đổi
-                                }}
-                                className={styles.inputLo}
-                                required
-                            >
-                                <option value="" disabled></option>
-                                {options.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                                <label htmlFor="spendType" className={styles.text}>
-                                    Loại chi tiêu
-                                </label>
+                    </div>
+                    <div className={styles.historyToday}>
+                        <p className={styles.title}>Hôm nay</p>
+                        <div className={styles.item}>
+                            <div className={styles.icon}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                            </div>
+                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
+                                <p>{value.toLocaleString()}</p>
+                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
                             </div>
                         </div>
-
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="text"
-                                    value={Math.round(spendAmount != null ? spendAmount : 0).toLocaleString('vi-VN')}
-                                    onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
-                                        setSpendAmount(Number(value)); // Store as a number
-                                    }}
-                                    onBlur={() => setSpendAmount(Math.round(spendAmount != null ? spendAmount : 0))}
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                />
-                                <label htmlFor="email" className={styles.text}>
-                                    Số tiền
-                                </label>
+                        <div className={styles.item}>
+                            <div className={styles.icon}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                            </div>
+                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
+                                <p>{value.toLocaleString()}</p>
+                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
                             </div>
                         </div>
-
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="date"
-                                    value={abbre || ""}
-                                    onChange={(e) => setAbbre(e.target.value)}
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                    placeholder=" Ngày tháng"
-                                />
-                            </div>
-                        </div>
-
-                        <div onClick={createNewSpendType} className="mt-3 w-full p-2 light-yellow-bg text-white rounded-[0.78rem] transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer">Thêm chi tiêu</div>
-                    </form>
+                    </div>
                 </div>
             </div>
 
             {/* Bảng các loại chi tiêu */}
             <div className="w-2/3 flex flex-col h-full">
 
-                <div className={styles.category}>
-                    <div className={styles.headCate}>
-                        <p className={styles.txthead}>Các Loại Chi Tiêu</p>
-                        {/* <button className={styles.btnhead}>+</button> */}
-                        <Link href="/spendtype" className={styles.btnhead}>
-                            +
-                        </Link>
+                <div className={styles.chart}>
+                    <div className={styles.imgChart}>
+                        <img src="/img/home.png" alt="" width={500} height={500}/>
                     </div>
-                    <div className={styles.contentCate}>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: '#fd443b'}}>
-                                <FontAwesomeIcon icon={faHouse} />
-                            </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
+                    <div className={styles.category}>
+                        <div className={styles.headCate}>
+                            <p className={styles.txthead}>Các Loại Chi Tiêu</p>
                         </div>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: '#4807EA'}}>
-                                <FontAwesomeIcon icon={faCar} />
+                        <div className={styles.contentCate}>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#fd443b'}}>
+                                    <FontAwesomeIcon icon={faHouse} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
-                        </div>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: 'yellow'}}>
-                                <FontAwesomeIcon icon={faCartShopping} />
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#4807EA'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
-                        </div>
-                        <div className={styles.iconBack} >
-                            <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
-                                <FontAwesomeIcon icon={faCar} />
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: 'yellow'}}>
+                                    <FontAwesomeIcon icon={faCartShopping} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
-                        </div>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: 'purple'}}>
-                                <FontAwesomeIcon icon={faCar} />
+                            <div className={styles.iconBack} >
+                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
-                        </div>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: '#EF5DA8'}}>
-                                <FontAwesomeIcon icon={faCar} />
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: 'purple'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
-                        </div>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: 'green'}}>
-                                <FontAwesomeIcon icon={faCar} />
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#EF5DA8'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
-                        </div>
-                        <div className={styles.iconBack}>
-                            <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
-                                <FontAwesomeIcon icon={faCar} />
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: 'green'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
-                            <p className={styles.txtIcon}>Tiền nhà</p>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
-
                 <table>
                     <div className={styles.headtbl}>
                         <div className={styles.titletbl}>
                             <p className={styles.titleTbl}>Các Khoản Chi Trong Tháng</p>
                             <p className={styles.titleTbl1}>Hoạt động hàng tháng</p>
                         </div>
-                        <div className={styles.search}>
-                            <input
-                                type="text"
-                                placeholder="Tìm kiếm các khoản"
-                                className={styles.searchTbl}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <div className={styles.iconOverlay}>
-                                <FontAwesomeIcon icon={faSearch} />
-                            </div>
-                        </div>
-
+                        <Link href="/spendhistory" className={styles.titleTbl2}>
+                            Xem Tất Cả
+                        </Link>
                     </div>
                 </table>
                 <div className={styles.tableContainer}>
