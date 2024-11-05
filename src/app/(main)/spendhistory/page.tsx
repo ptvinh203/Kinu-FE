@@ -1,18 +1,16 @@
 "use client";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTrashCan, faPenToSquare, faHouse, faCar, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
 import styles from './spendtype.module.scss'
-import { successNotification } from "../../../components/Notification/index"
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { userInfo } from 'os';
+import { CarOutlined, HomeOutlined } from '@ant-design/icons';
 
-const SpendType: React.FC = () => {
+const SpendType: React.FC = () => { 
     const [spendTypes, setSpendTypes] = useState([
         { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
     ]);
@@ -341,13 +339,10 @@ const SpendType: React.FC = () => {
                                     autoComplete="off"
                                     placeholder=" Ngày tháng"
                                 />
-                                {/* <label htmlFor="email" className={styles.text}>
-                                    Ngày tháng
-                                </label> */}
                             </div>
                         </div>
 
-                        <div onClick={createNewSpendType} className="mt-3 w-full p-2 light-yellow-bg text-white rounded-[0.78rem] transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer">Thêm loại chi tiêu</div>
+                        <div onClick={createNewSpendType} className="mt-3 w-full p-2 light-yellow-bg text-white rounded-[0.78rem] transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer">Thêm chi tiêu</div>
                     </form>
                 </div>
             </div>
@@ -356,7 +351,61 @@ const SpendType: React.FC = () => {
             <div className="w-2/3 flex flex-col h-full">
 
                 <div className={styles.category}>
-                    hello
+                    <div className={styles.headCate}>
+                        <p className={styles.txthead}>Các Loại Chi Tiêu</p>
+                        <button className={styles.btnhead}>+</button>
+                    </div>
+                    <div className={styles.contentCate}>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: '#fd443b'}}>
+                                <FontAwesomeIcon icon={faHouse} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: '#4807EA'}}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: 'yellow'}}>
+                                <FontAwesomeIcon icon={faCartShopping} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack} >
+                            <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: 'purple'}}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: '#EF5DA8'}}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: 'green'}}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                        <div className={styles.iconBack}>
+                            <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <p className={styles.txtIcon}>Tiền nhà</p>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <table>
@@ -385,9 +434,9 @@ const SpendType: React.FC = () => {
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Loại Thanh Toán</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Ngày Tháng</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền</th>
                             </tr>
                         </thead>
                         <tbody className={styles.bodyTbl}>
@@ -521,20 +570,6 @@ const SpendType: React.FC = () => {
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Biểu tượng</label>
                         
-                    </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Màu sắc</label>
-                        <div className={styles.colorOptions}>
-                            {/* {colorOptions.map(color => (
-                                <div
-                                    key={color.id}
-                                    className={`${styles.colorItem} ${editColor === color.id ? styles.selected : ''}`}
-                                    onClick={() => { setEditColor(color.id) }}
-                                    style={{ backgroundColor: color.colorCode }}
-                                >
-                                </div>
-                            ))} */}
-                        </div>
                     </div>
                     <div className={styles.modalFooter}>
                         <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
