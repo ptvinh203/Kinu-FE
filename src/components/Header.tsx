@@ -1,8 +1,21 @@
+"use client";
 import Image from 'next/image';
+import { useState } from 'react';
+import Notification from './Notification/notification';
 
 const Header = () => {
+    const [isNotificationOpen, setNotificationOpen] = useState(false);
+
+    const toggleNotification = () => {
+        setNotificationOpen(!isNotificationOpen);
+    };
+
+    const closeNotification = () => {
+        setNotificationOpen(false);
+    };
+
     return (
-        <div className="flex justify-between items-center border-b-gray-200 border-b-[1px] ">
+        <div className="flex justify-between items-center border-b-gray-200 border-b-[1px]">
             <div className="px-5 py-3 flex gap-0">
                 <Image src="/icons/logo.svg" alt="logo" width={50} height={50} />
                 <div className="px-5 flex flex-col justify-center">
@@ -11,18 +24,20 @@ const Header = () => {
                 </div>
             </div>
             <div className="px-5 flex justify-center items-center gap-3">
+            <button className="icon" onClick={toggleNotification} aria-label="Thông báo">
+                    <Image src="/icons/menu_header/notification.svg" alt="notification" width={20} height={20} />
+                </button>
+                {isNotificationOpen && <Notification onClose={closeNotification} />}
                 <div className="icon">
-                    <Image src="/icons/menu_header/notification.svg" alt="logo" width={20} height={20} />
-                </div>
-                <div className="icon">
-                    <Image src="/icons/menu_header/chart.svg" alt="logo" width={20} height={20} />
+                    <Image src="/icons/menu_header/chart.svg" alt="chart" width={20} height={20} />
                 </div>
                 <div className="avatar">
-                    <Image src="/icons/menu_header/Photo.svg" alt="logo" width={50} height={50} />
+                    <Image src="/icons/menu_header/Photo.svg" alt="avatar" width={50} height={50} />
                 </div>
-                <Image src="/icons/menu_header/dropdown.svg" alt="logo" width={30} height={30} />
+                <div className="icon">
+                    <Image src="/icons/menu_header/dropdown.svg" alt="dropdown" width={30} height={30} />
+                </div>
             </div>
-
         </div>
     );
 };

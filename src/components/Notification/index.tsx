@@ -12,3 +12,4 @@ export const errorNotification = (message1: string): void => {
 export const warningNotification = (message1: string): void => {
     message.warning(message1);
 };
+
