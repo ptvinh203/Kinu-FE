@@ -10,7 +10,8 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { faSearch, faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
     faDog,
     faGuitar,
@@ -545,8 +546,8 @@ const SpendType: React.FC = () => {
                                 </label>
                             </div>
                         </div>
-
-                        <div className="mb-3">
+                                    {/*của Thắng*/}
+                        {/* <div className="mb-3">
                             <div className={styles.inputGroup}>
                                 <input
                                     type="date"
@@ -557,6 +558,18 @@ const SpendType: React.FC = () => {
                                     autoComplete="off"
                                     placeholder=" Ngày tháng"
                                 />
+                            </div>
+                        </div> */}
+                                    {/*của Thịnh*/}
+                        <div className="mb-3">
+                            <div className={styles.inputGroup}>
+                            <DatePicker
+                                selected={expenditureDate || ""}
+                                onChange={(e) => setExpenditureDate(e)}
+                                dateFormat="dd/MM/yyyy"
+                                className={styles.inputLo}
+                                placeholderText="Chọn ngày" // Thêm thuộc tính placeholderText
+                            />
                             </div>
                         </div>
 
