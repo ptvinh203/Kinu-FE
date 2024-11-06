@@ -1,78 +1,20 @@
 "use client";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTrashCan, faPenToSquare, faHouse, faCar, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
-
-import {
-    faDog,
-    faGuitar,
-    faMagnifyingGlass,
-    faPhone,
-    faCartShopping,
-    faCarSide,
-    faPlaneDeparture,
-    faPizzaSlice,
-    faBurger,
-    faCheese,
-    faIceCream,
-    faBowlFood,
-    faBreadSlice,
-    faMugHot,
-    faShip,
-    faVideo,
-    faStar,
-    faShirt,
-    faMartiniGlass,
-    faVolleyball,
-    faBaseballBatBall,
-    faTableTennisPaddleBall,
-    faFutbol,
-    faGolfBallTee,
-    faFootball,
-    faBicycle,
-    faHouse, faUser, faCheck, faDownload, faImage, faBars, faEnvelope,
-    faMusic, faWandMagicSparkles, faHeart, faArrowRight,
-    faCircleXmark, faBomb, faPoo, faCameraRetro, faXmark, faCloud,
-    faComment, faCaretUp, faTruckFast, faPenNib, faArrowUp, faHippo,
-    faFaceSmile, faCalendarDays, faPaperclip, faShieldHalved,
-    faFile, faBell, faClipboard, faFilter, faCircleInfo, faArrowUpFromBracket,
-    faBolt, faCar, faGhost, faCircleUser, faPen, faUmbrella,
-    faGift, faFilm, faList, faGear, faTrash, faCircleUp, faCircleDown, faInbox, faRotateRight, faLock, faHeadphones,
-    faBarcode, faTag, faBook, faBookmark, faPrint, faCamera,
-    faFont, faCircleHalfStroke, faDroplet, faShareFromSquare, faPlus,
-    faMinus, faShare, faCircleExclamation, faFire, faEye, faEyeSlash,
-    faPlane, faMagnet, faHand, faFolder, faFolderOpen, faMoneyBill, faThumbsUp, faThumbsDown, faComments, faLemon, faKey, faThumbtack,
-    faGears, faPaperPlane, faCode, faGlobe, faTruck, faCity,
-    faTicket, faTree, faWifi, faPaintRoller, faSliders, faBrush,
-    faHashtag, faFlask, faBriefcase, faCompass, faDumpsterFire, faPerson, faPersonDress,
-    faAddressBook, faBath, faHandshake, faSnowflake,
-    faRightToBracket, faEarthAmericas, faCloudArrowUp, faBinoculars, faPalette,
-    faLayerGroup, faUsers, faGamepad, faBusinessTime
-} from '@fortawesome/free-solid-svg-icons';
-
-import styles from './spendtype.module.scss'
-import { successNotification } from "../../../components/Notification/index"
+import styles from './homepage.module.scss'
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { userInfo } from 'os';
+import { CarOutlined, HomeOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
-const SpendType: React.FC = () => {
+const SpendType: React.FC = () => { 
     const [spendTypes, setSpendTypes] = useState([
         { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
     ]);
-
-    const [colorOptions, setColorOptions] = useState([
-        { id: 1, name: 'Đỏ', colorCode: '#FF0000', spent: 0 },
-    ]);
-
-    const [icons, setIcon] = useState([
-        { id: 1, name: faDog, svgUrl: "Dog", spent: 0 },
-    ]);
-
 
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
     const [selectedColor, setSelectedColor] = useState<number | null>(null);
@@ -88,6 +30,7 @@ const SpendType: React.FC = () => {
         icon: '',
         color: '',
     });
+    const [spendName, setSpendName] = useState('');
     const [spendType, setSpendType] = useState("");
     const [spendAmount, setSpendAmount] = useState<any>();
     const [abbre, setAbbre] = useState("");
@@ -100,159 +43,6 @@ const SpendType: React.FC = () => {
     const [editAbbre, setEditAbbre] = useState<any>();
     const [editColor, setEditColor] = useState<any>();
     const [editIcon, setEditIcon] = useState<any>();
-
-    const iconMapping: Record<string, IconDefinition> = {
-        faDog,
-        faGuitar,
-        faMagnifyingGlass,
-        faPhone,
-        faCartShopping,
-        faCarSide,
-        faPlaneDeparture,
-        faPizzaSlice,
-        faBurger,
-        faCheese,
-        faIceCream,
-        faBowlFood,
-        faBreadSlice,
-        faMugHot,
-        faShip,
-        faVideo,
-        faStar,
-        faShirt,
-        faMartiniGlass,
-        faVolleyball,
-        faBaseballBatBall,
-        faTableTennisPaddleBall,
-        faFutbol,
-        faGolfBallTee,
-        faFootball,
-        faBicycle,
-        faHouse, 
-        faUser, 
-        faCheck, 
-        faDownload, 
-        faImage, 
-        faBars, 
-        faEnvelope,
-        faMusic, 
-        faWandMagicSparkles, 
-        faHeart, 
-        faArrowRight,
-        faCircleXmark, 
-        faBomb, 
-        faPoo, 
-        faCameraRetro, 
-        faXmark, 
-        faCloud,
-        faComment, 
-        faCaretUp, 
-        faTruckFast, 
-        faPenNib, 
-        faArrowUp, 
-        faHippo,
-        faFaceSmile, 
-        faCalendarDays, 
-        faPaperclip, 
-        faShieldHalved,
-        faFile, 
-        faBell, 
-        faClipboard, 
-        faFilter, 
-        faCircleInfo, 
-        faArrowUpFromBracket,
-        faBolt, 
-        faCar, 
-        faGhost, 
-        faCircleUser, 
-        faPen, 
-        faUmbrella,
-        faGift, 
-        faFilm, 
-        faList, 
-        faGear, 
-        faTrash, 
-        faCircleUp, 
-        faCircleDown, 
-        faInbox, 
-        faRotateRight, 
-        faLock, 
-        faHeadphones,
-        faBarcode, 
-        faTag, 
-        faBook, 
-        faBookmark, 
-        faPrint, 
-        faCamera,
-        faFont, 
-        faCircleHalfStroke, 
-        faDroplet, 
-        faShareFromSquare, 
-        faPlus,
-        faMinus, 
-        faShare, 
-        faCircleExclamation, 
-        faFire, 
-        faEye, 
-        faEyeSlash,
-        faPlane, 
-        faMagnet, 
-        faHand, 
-        faFolder, 
-        faFolderOpen, 
-        faMoneyBill, 
-        faThumbsUp, 
-        faThumbsDown, 
-        faComments, 
-        faLemon, 
-        faKey, 
-        faThumbtack,
-        faGears, 
-        faPaperPlane, 
-        faCode, 
-        faGlobe, 
-        faTruck, 
-        faCity,
-        faTicket, 
-        faTree, 
-        faWifi, 
-        faPaintRoller, 
-        faSliders, 
-        faBrush,
-        faHashtag, 
-        faFlask, 
-        faBriefcase, 
-        faCompass, 
-        faDumpsterFire, 
-        faPerson, 
-        faPersonDress,
-        faAddressBook, 
-        faBath, 
-        faHandshake, 
-        faSnowflake,
-        faRightToBracket, 
-        faEarthAmericas, 
-        faCloudArrowUp, 
-        faBinoculars, 
-        faPalette,
-        faLayerGroup, 
-        faUsers, 
-        faGamepad, 
-        faBusinessTime
-    };
-
-    // Helper function to get the icon safely
-    const getIconFromSvgUrl = (svgUrl: string): IconDefinition => {
-
-        const icon = iconMapping[svgUrl];
-
-        if (icon) {
-            return icon;
-        } else {
-            return faDog;  // Fallback icon if not found
-        }
-    };
-
 
     const fetchSpendTypes = async () => {
         try {
@@ -276,44 +66,10 @@ const SpendType: React.FC = () => {
         }
     };
 
-    const fetchColor = async () => {
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/color`);
-
-            const data = response.data.data;
-
-            setColorOptions(data);  // Set the modified data to state
-        } catch (error) {
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchIcon = async () => {
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/icon`);
-            console.log("API Response: ", response.data);
-
-            const data = response.data.data;
-            const updatedData = data.map((item: any) => ({
-                ...item,  // Spread the existing properties of the item
-                spent: 0  // Initialize `spent` to 0 or any value you want
-            }));
-            console.log(updatedData)
-
-            setIcon(updatedData);  // Set the modified data to state
-        } catch (error) {
-        } finally {
-            setLoading(false);
-        }
-    };
-
 
     // useEffect to call API when component mounts
     useEffect(() => {
         fetchSpendTypes();
-        fetchColor();
-        fetchIcon();
     }, []);
 
     const showModal = (item: any) => {
@@ -480,22 +236,31 @@ const SpendType: React.FC = () => {
         return matchesName || matchesAmount;
     });
 
+    const options = [
+        { value: 'Tiền nhà', label: 'Tiền nhà' },
+        { value: 'Tiền điện', label: 'Tiền điện' },
+        { value: 'Tiền nước', label: 'Tiền nước' },
+        { value: 'Ăn uống', label: 'Ăn uống' },
+    ];
+
+    const value = -9000000.0;
+
     if (loading) {
         return <p>Loading spend types...</p>;
     }
     return (
         <div className="flex w-full h-full p-0 space-x-10 tao-bg">
             {/* Sidebar Thêm loại chi tiêu */}
-            <div className="w-[25%] p-5 pink-bg rounded-lg h-full">
+            <div className="w-[25%] p-5 pink-bg rounded-lg h-full flex flex-col justify-between">
                 <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
                     <Image className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]" src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
                     <div className="top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
-                        <h2 className="text-[13px] font-semibold">TỔNG SỐ TIỀN DỰ TÍNH</h2>
+                        <h2 className="text-[13px] font-semibold">SỐ DƯ TỪ VÍ ĐIỆN TỬ</h2>
                         <div className="flex gap-5">
                             <Image className="" src="/icons/spendtype/wallet.svg" alt="decoration" width={50} height={50} />
                             <div>
                                 <p className={styles.money}>{totalEstimated.toLocaleString('vi-VN')} VND</p>
-                                <p className="text-sm font-md">Tổng số tiền</p>
+                                <p className="text-sm font-md">Tổng chi phí</p>
                             </div>
                         </div>
 
@@ -503,115 +268,128 @@ const SpendType: React.FC = () => {
                 </div>
 
                 <div>
-                    <h3 className="text-[15px] mb-3 font-bold">Thêm Loại Chi Tiêu</h3>
-                    <form>
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="text"
-                                    value={spendType}
-                                    onChange={(e) => setSpendType(e.target.value)}
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                />
-                                <label htmlFor="email" className={styles.text}>
-                                    Loại chi tiêu
-                                </label>
+                    <h3 className="text-[15px] mb-3 font-bold" style={{ color: 'red' }}>Các Khoản Chi Gần Nhất</h3>
+                    <hr />
+                    <div className={styles.historyToday}>
+                        <p className={styles.title}>Hôm nay</p>
+                        <div className={styles.item}>
+                            <div className={styles.icon}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                            </div>
+                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
+                                <p>{value.toLocaleString()}</p>
+                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
                             </div>
                         </div>
-
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="text"
-                                    value={Math.round(spendAmount != null ? spendAmount : 0).toLocaleString('vi-VN')}
-                                    onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
-                                        setSpendAmount(Number(value)); // Store as a number
-                                    }}
-                                    onBlur={() => setSpendAmount(Math.round(spendAmount != null ? spendAmount : 0))}
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                />
-                                <label htmlFor="email" className={styles.text}>
-                                    Số tiền dự tính
-                                </label>
+                    </div>
+                    <div className={styles.historyToday}>
+                        <p className={styles.title}>Hôm nay</p>
+                        <div className={styles.item}>
+                            <div className={styles.icon}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                            </div>
+                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
+                                <p>{value.toLocaleString()}</p>
+                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
                             </div>
                         </div>
-
-                        <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="text"
-                                    value={abbre}
-                                    onChange={(e) => setAbbre(e.target.value)}
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                />
-                                <label htmlFor="email" className={styles.text}>
-                                    Ký hiệu viết tắt
-                                </label>
+                        <div className={styles.item}>
+                            <div className={styles.icon}>
+                                <FontAwesomeIcon icon={faCar} />
+                            </div>
+                            <div className={styles.txt}>
+                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                            </div>
+                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
+                                <p>{value.toLocaleString()}</p>
+                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
                             </div>
                         </div>
-
-                        <div className={styles.coolinput}>
-                            <label htmlFor="input" className={styles.text}>Biểu tượng</label>
-                            <div className={styles.colorOptions}>
-                                {icons.map(icon => (
-                                    <div
-                                        key={icon.id}
-                                        className={`${styles.colorItem} ${selectedIcon === icon.id ? styles.selected : ''}`}
-                                        onClick={() => setSelectedIcon(icon.id)}
-                                    >
-                                        <div className={styles.colorName}>
-                                            <FontAwesomeIcon icon={getIconFromSvgUrl(icon.svgUrl)} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className={styles.coolinput}>
-                            <label htmlFor="input" className={styles.text}>Màu sắc</label>
-                            <div className={styles.colorOptions}>
-                                {colorOptions.map(color => (
-                                    <div
-                                        key={color.id}
-                                        className={`${styles.colorItem} ${selectedColor === color.id ? styles.selected : ''}`}
-                                        onClick={() => setSelectedColor(color.id)}
-                                        style={{ backgroundColor: color.colorCode }}
-                                    >
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div onClick={createNewSpendType} className="mt-3 w-full p-2 light-yellow-bg text-white rounded-[0.78rem] transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer">Thêm loại chi tiêu</div>
-                    </form>
+                    </div>
                 </div>
             </div>
 
             {/* Bảng các loại chi tiêu */}
             <div className="w-2/3 flex flex-col h-full">
-                <table>
-                    <div className={styles.headtbl}>
-                        <p className={styles.titleTbl}>Các Loại Chi Tiêu</p>
-                        <div className={styles.search}>
-                            <input
-                                type="text"
-                                placeholder="Tìm kiếm"
-                                className={styles.searchTbl}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <div className={styles.iconOverlay}>
-                                <FontAwesomeIcon icon={faSearch} />
+
+                <div className={styles.chart}>
+                    <div className={styles.imgChart}>
+                        <img src="/img/home.png" alt="" width={500} height={500}/>
+                    </div>
+                    <div className={styles.category}>
+                        <div className={styles.headCate}>
+                            <p className={styles.txthead}>Các Loại Chi Tiêu</p>
+                        </div>
+                        <div className={styles.contentCate}>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#fd443b'}}>
+                                    <FontAwesomeIcon icon={faHouse} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#4807EA'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: 'yellow'}}>
+                                    <FontAwesomeIcon icon={faCartShopping} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack} >
+                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: 'purple'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#EF5DA8'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: 'green'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
+                            </div>
+                            <div className={styles.iconBack}>
+                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                    <FontAwesomeIcon icon={faCar} />
+                                </div>
+                                <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                         </div>
-
+                    </div>
+                </div>
+                <table>
+                    <div className={styles.headtbl}>
+                        <div className={styles.titletbl}>
+                            <p className={styles.titleTbl}>Các Khoản Chi Trong Tháng</p>
+                            <p className={styles.titleTbl1}>Hoạt động hàng tháng</p>
+                        </div>
+                        <Link href="/spendhistory" className={styles.titleTbl2}>
+                            Xem Tất Cả
+                        </Link>
                     </div>
                 </table>
                 <div className={styles.tableContainer}>
@@ -619,9 +397,9 @@ const SpendType: React.FC = () => {
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Loại Thanh Toán</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Ngày Tháng</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền</th>
                             </tr>
                         </thead>
                         <tbody className={styles.bodyTbl}>
@@ -630,7 +408,7 @@ const SpendType: React.FC = () => {
                                 <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                     <div className={styles.nameIcon}>
                                         <div className={`${styles.bgrIcon} bg-[#eeeeee]`}>
-                                            <FontAwesomeIcon icon={faDog} className={styles.iconTable} />
+                                            {/* <FontAwesomeIcon icon={faDog} className={styles.iconTable} /> */}
                                         </div>
                                         <p>Mặc định</p>
                                     </div>
@@ -656,7 +434,7 @@ const SpendType: React.FC = () => {
                                     <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                         <div className={styles.nameIcon}>
                                             <div style={{ backgroundColor: item.color.colorCode }} className={styles.bgrIcon}>
-                                                <FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} className={styles.iconTable} />
+                                                {/* <FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} className={styles.iconTable} /> */}
                                             </div>
                                             <p>{item.name}</p>
                                         </div>
@@ -754,31 +532,7 @@ const SpendType: React.FC = () => {
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Biểu tượng</label>
-                        <div className={styles.colorOptions}>
-                            {icons.map(icon => (
-                                <div
-                                    className={`${styles.colorItem} ${editIcon === icon.id ? styles.selected : ''}`}
-                                    key={icon.id}
-                                    onClick={() => { setEditIcon(icon.id) }}
-                                >
-                                    <FontAwesomeIcon icon={getIconFromSvgUrl(icon.svgUrl)} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Màu sắc</label>
-                        <div className={styles.colorOptions}>
-                            {colorOptions.map(color => (
-                                <div
-                                    key={color.id}
-                                    className={`${styles.colorItem} ${editColor === color.id ? styles.selected : ''}`}
-                                    onClick={() => { setEditColor(color.id) }}
-                                    style={{ backgroundColor: color.colorCode }}
-                                >
-                                </div>
-                            ))}
-                        </div>
+                        
                     </div>
                     <div className={styles.modalFooter}>
                         <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
