@@ -223,7 +223,43 @@
   padding-top: 20px;
 
   .imgChart{
+    margin-top: 10px;
     width: 30%;
+
+    .headChart{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      .totalhead{
+        background-color: #fff;
+        padding: 16px;
+        border-radius: 10px;
+        .txtTotal{
+          font-size: 25px;
+          font-weight: bold;
+        }
+      }
+    }
+    .bodyChart{
+      display: flex;
+      margin-top: 10px;
+      justify-content: space-between;
+
+      .totalBody{
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        .titleTxt{
+          font-size: 10px;
+        }
+        .moneyTxt{
+          font-weight: bold;
+        }
+      }
+      .imgChart3{
+        border-radius: 10px;
+      }
+    }
   }
   .category{
     width: 60%;

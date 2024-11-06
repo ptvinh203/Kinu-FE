@@ -323,7 +323,24 @@ const SpendType: React.FC = () => {
 
                 <div className={styles.chart}>
                     <div className={styles.imgChart}>
-                        <img src="/img/home.png" alt="" width={500} height={500}/>
+                        {/* <img src="/img/home.png" alt="" width={500} height={500}/> */}
+                        <div className={styles.headChart}>
+                            <img src="img/s1.png" alt="" width={150}/>
+                            <div className={styles.totalhead}>
+                                <p className={styles.txtTotal}>10.000.000</p>
+                                <p>Tổng chi tiêu</p>
+                            </div>
+                        </div>
+                        <hr style={{ margin: '10px' }} />
+                        <img src="img/s2.png" alt="" width={350}/>
+                        <div className={styles.bodyChart}>
+                            <div className={styles.totalBody}>
+                                <p className={styles.titleTxt}>Chi tiêu tuần này</p>
+                                <p className={styles.moneyTxt}>10.000.000 VND</p>
+                                <img src="img/s4.png" alt="" width={125}/>
+                            </div>
+                            <img src="img/s3.png" alt="" width={150} className={styles.imgChart3}/>
+                        </div>
                     </div>
                     <div className={styles.category}>
                         <div className={styles.headCate}>
