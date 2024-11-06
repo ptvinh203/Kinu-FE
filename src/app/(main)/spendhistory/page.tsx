@@ -552,28 +552,78 @@ const SpendType: React.FC = () => {
                         <Image src="/icons/logo.svg" alt="logo" width={50} height={50} />
                         <p className={styles.titleMobal}>Chỉnh Sửa Loại Chi Tiêu</p>
                     </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Tên loại chi tiêu</label>
-                        <input type="text" value={editType} placeholder="Write here..." onChange={(e) => setEditType(e.target.value)} name="name" className={styles.inputMobal} />
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <input
+                                type="text"
+                                value={spendName} // Sử dụng spendName thay vì spendType
+                                onChange={(e) => setSpendName(e.target.value)} // Cập nhật state cho spendName
+                                className={styles.inputLo}
+                                required
+                                autoComplete="off"
+                            />
+                            <label htmlFor="spendName" className={styles.text}>
+                                Tên khoản chi tiêu
+                            </label>
+                        </div>
                     </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
-                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..." 
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
-                            setEditSpendAmount(Number(value)); // Store as a number
-                        }}
-                        onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
-                        name="money" className={styles.inputMobal} />
+        
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                        <select
+                            value={spendType}
+                            onChange={(e) => {
+                                const value = e.target.value; // Lấy giá trị được chọn
+                                setSpendType(value); // Cập nhật state cho spendType
+                                setSpendAmount(0); // Đặt lại số tiền khi loại chi tiêu thay đổi
+                            }}
+                            className={styles.inputLo}
+                            required
+                        >
+                            <option value="" disabled></option>
+                            {options.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                            <label htmlFor="spendType" className={styles.text}>
+                                Loại chi tiêu
+                            </label>
+                        </div>
                     </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>
-                        <input type="text" value={editAbbre} placeholder="Write here..." onChange={(e) => setEditAbbre(e.target.value)}
-                            name="symbol" className={styles.inputMobal} />
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <input
+                                type="text"
+                                value={Math.round(spendAmount != null ? spendAmount : 0).toLocaleString('vi-VN')}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
+                                    setSpendAmount(Number(value)); // Store as a number
+                                }}
+                                onBlur={() => setSpendAmount(Math.round(spendAmount != null ? spendAmount : 0))}
+                                className={styles.inputLo}
+                                required
+                                autoComplete="off"
+                            />
+                            <label htmlFor="email" className={styles.text}>
+                                Số tiền
+                            </label>
+                        </div>
                     </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Biểu tượng</label>
-                        
+
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <input
+                                type="date"
+                                value={abbre || ""}
+                                onChange={(e) => setAbbre(e.target.value)}
+                                className={styles.inputLo}
+                                required
+                                autoComplete="off"
+                                placeholder=" Ngày tháng"
+                            />
+                        </div>
                     </div>
                     <div className={styles.modalFooter}>
                         <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
