@@ -1,7 +1,7 @@
 "use client";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faTrashCan, faPenToSquare, faHouse, faCar, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
@@ -11,7 +11,206 @@ import { toast } from 'react-toastify';
 import { CarOutlined, HomeOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
-const SpendType: React.FC = () => { 
+import {
+    faDog,
+    faGuitar,
+    faMagnifyingGlass,
+    faPhone,
+    faCartShopping,
+    faCarSide,
+    faPlaneDeparture,
+    faPizzaSlice,
+    faBurger,
+    faCheese,
+    faIceCream,
+    faBowlFood,
+    faBreadSlice,
+    faMugHot,
+    faShip,
+    faVideo,
+    faStar,
+    faShirt,
+    faMartiniGlass,
+    faVolleyball,
+    faBaseballBatBall,
+    faTableTennisPaddleBall,
+    faFutbol,
+    faGolfBallTee,
+    faFootball,
+    faBicycle,
+    faHouse, faUser, faCheck, faDownload, faImage, faBars, faEnvelope,
+    faMusic, faWandMagicSparkles, faHeart, faArrowRight,
+    faCircleXmark, faBomb, faPoo, faCameraRetro, faXmark, faCloud,
+    faComment, faCaretUp, faTruckFast, faPenNib, faArrowUp, faHippo,
+    faFaceSmile, faCalendarDays, faPaperclip, faShieldHalved,
+    faFile, faBell, faClipboard, faFilter, faCircleInfo, faArrowUpFromBracket,
+    faBolt, faCar, faGhost, faCircleUser, faPen, faUmbrella,
+    faGift, faFilm, faList, faGear, faTrash, faCircleUp, faCircleDown, faInbox, faRotateRight, faLock, faHeadphones,
+    faBarcode, faTag, faBook, faBookmark, faPrint, faCamera,
+    faFont, faCircleHalfStroke, faDroplet, faShareFromSquare, faPlus,
+    faMinus, faShare, faCircleExclamation, faFire, faEye, faEyeSlash,
+    faPlane, faMagnet, faHand, faFolder, faFolderOpen, faMoneyBill, faThumbsUp, faThumbsDown, faComments, faLemon, faKey, faThumbtack,
+    faGears, faPaperPlane, faCode, faGlobe, faTruck, faCity,
+    faTicket, faTree, faWifi, faPaintRoller, faSliders, faBrush,
+    faHashtag, faFlask, faBriefcase, faCompass, faDumpsterFire, faPerson, faPersonDress,
+    faAddressBook, faBath, faHandshake, faSnowflake,
+    faRightToBracket, faEarthAmericas, faCloudArrowUp, faBinoculars, faPalette,
+    faLayerGroup, faUsers, faGamepad, faBusinessTime,
+    IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
+
+const SpendType: React.FC = () => {
+    const iconMapping: Record<string, IconDefinition> = {
+        faDog,
+        faGuitar,
+        faMagnifyingGlass,
+        faPhone,
+        faCartShopping,
+        faCarSide,
+        faPlaneDeparture,
+        faPizzaSlice,
+        faBurger,
+        faCheese,
+        faIceCream,
+        faBowlFood,
+        faBreadSlice,
+        faMugHot,
+        faShip,
+        faVideo,
+        faStar,
+        faShirt,
+        faMartiniGlass,
+        faVolleyball,
+        faBaseballBatBall,
+        faTableTennisPaddleBall,
+        faFutbol,
+        faGolfBallTee,
+        faFootball,
+        faBicycle,
+        faHouse,
+        faUser,
+        faCheck,
+        faDownload,
+        faImage,
+        faBars,
+        faEnvelope,
+        faMusic,
+        faWandMagicSparkles,
+        faHeart,
+        faArrowRight,
+        faCircleXmark,
+        faBomb,
+        faPoo,
+        faCameraRetro,
+        faXmark,
+        faCloud,
+        faComment,
+        faCaretUp,
+        faTruckFast,
+        faPenNib,
+        faArrowUp,
+        faHippo,
+        faFaceSmile,
+        faCalendarDays,
+        faPaperclip,
+        faShieldHalved,
+        faFile,
+        faBell,
+        faClipboard,
+        faFilter,
+        faCircleInfo,
+        faArrowUpFromBracket,
+        faBolt,
+        faCar,
+        faGhost,
+        faCircleUser,
+        faPen,
+        faUmbrella,
+        faGift,
+        faFilm,
+        faList,
+        faGear,
+        faTrash,
+        faCircleUp,
+        faCircleDown,
+        faInbox,
+        faRotateRight,
+        faLock,
+        faHeadphones,
+        faBarcode,
+        faTag,
+        faBook,
+        faBookmark,
+        faPrint,
+        faCamera,
+        faFont,
+        faCircleHalfStroke,
+        faDroplet,
+        faShareFromSquare,
+        faPlus,
+        faMinus,
+        faShare,
+        faCircleExclamation,
+        faFire,
+        faEye,
+        faEyeSlash,
+        faPlane,
+        faMagnet,
+        faHand,
+        faFolder,
+        faFolderOpen,
+        faMoneyBill,
+        faThumbsUp,
+        faThumbsDown,
+        faComments,
+        faLemon,
+        faKey,
+        faThumbtack,
+        faGears,
+        faPaperPlane,
+        faCode,
+        faGlobe,
+        faTruck,
+        faCity,
+        faTicket,
+        faTree,
+        faWifi,
+        faPaintRoller,
+        faSliders,
+        faBrush,
+        faHashtag,
+        faFlask,
+        faBriefcase,
+        faCompass,
+        faDumpsterFire,
+        faPerson,
+        faPersonDress,
+        faAddressBook,
+        faBath,
+        faHandshake,
+        faSnowflake,
+        faRightToBracket,
+        faEarthAmericas,
+        faCloudArrowUp,
+        faBinoculars,
+        faPalette,
+        faLayerGroup,
+        faUsers,
+        faGamepad,
+        faBusinessTime
+    };
+
+    const getIconFromSvgUrl = (svgUrl: string): IconDefinition => {
+
+        const icon = iconMapping[svgUrl];
+
+        if (icon) {
+            return icon;
+        } else {
+            return faDog;  // Fallback icon if not found
+        }
+    };
+
     const [spendTypes, setSpendTypes] = useState([
         { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
     ]);
@@ -44,6 +243,45 @@ const SpendType: React.FC = () => {
     const [editColor, setEditColor] = useState<any>();
     const [editIcon, setEditIcon] = useState<any>();
 
+    const [expenditure, setExpenditure] = useState([
+        {
+            id: 0,
+            name: "",
+            amount: 0,
+            dateSpinding: "",
+            typeSprinding: {
+                id: 0,
+                name: "",
+                estimatedAmount: 0,
+                abbreviation: "",
+                colorCode: "",
+                svgUrl: "",
+            }
+        }
+    ]);
+
+    const fetchExpenditure = async () => {
+        try {
+            // Fetch data from API
+            const userId = localStorage.getItem('userId');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/expenditure?userId=${userId}`);
+            console.log("API Response: ", response.data);  // Log the response data
+
+            const data = response.data.data;
+            const updatedData = data.map((item: any) => ({
+                ...item,  // Spread the existing properties of the item
+                spent: 0  // Initialize `spent` to 0 or any value you want
+            }));
+            console.log(updatedData)
+
+            setExpenditure(updatedData);  // Set the modified data to state
+        } catch (error) {
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const fetchSpendTypes = async () => {
         try {
             // Fetch data from API
@@ -70,6 +308,7 @@ const SpendType: React.FC = () => {
     // useEffect to call API when component mounts
     useEffect(() => {
         fetchSpendTypes();
+        fetchExpenditure();
     }, []);
 
     const showModal = (item: any) => {
@@ -84,15 +323,15 @@ const SpendType: React.FC = () => {
     };
 
     const handleOk = () => {
-        if (editType === ""){
+        if (editType === "") {
             toast.error('Loại chi tiêu trống');
             return;
         }
-        if (editSpendAmount === null || editSpendAmount === 0){
+        if (editSpendAmount === null || editSpendAmount === 0) {
             toast.error('Số tiền dự tính không hợp lệ');
             return;
         }
-        if (editAbbre === ""){
+        if (editAbbre === "") {
             toast.error('Ký hiệu viết tắt trống');
             return;
         }
@@ -136,23 +375,23 @@ const SpendType: React.FC = () => {
     };
 
     const createNewSpendType = () => {
-        if (spendType === ""){
+        if (spendType === "") {
             toast.error('Vui lòng nhập loại chi tiêu')
             return
         }
-        if (abbre === ""){
+        if (abbre === "") {
             toast.error('Vui lòng nhập ký hiệu viết tắt')
             return
         }
-        if (spendAmount == null || spendAmount === 0){
+        if (spendAmount == null || spendAmount === 0) {
             toast.error('Vui lòng nhập số tiền dự tính')
             return
         }
-        if (selectedColor === null){
+        if (selectedColor === null) {
             toast.error('Vui lòng chọn màu')
             return
         }
-        if (selectedIcon === null){
+        if (selectedIcon === null) {
             toast.error('Vui lòng chọn biểu tượng')
             return
         }
@@ -278,7 +517,7 @@ const SpendType: React.FC = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
-                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c' }}>Giao dịch thành công</p>
                             </div>
                             <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
                                 <p>{value.toLocaleString()}</p>
@@ -294,7 +533,7 @@ const SpendType: React.FC = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
-                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c' }}>Giao dịch thành công</p>
                             </div>
                             <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
                                 <p>{value.toLocaleString()}</p>
@@ -307,7 +546,7 @@ const SpendType: React.FC = () => {
                             </div>
                             <div className={styles.txt}>
                                 <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
-                                <p className={styles.statustxt} style={{ color: '#00ff4c'}}>Giao dịch thành công</p>
+                                <p className={styles.statustxt} style={{ color: '#00ff4c' }}>Giao dịch thành công</p>
                             </div>
                             <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
                                 <p>{value.toLocaleString()}</p>
@@ -323,7 +562,7 @@ const SpendType: React.FC = () => {
 
                 <div className={styles.chart}>
                     <div className={styles.imgChart}>
-                        <img src="/img/home.png" alt="" width={500} height={500}/>
+                        <img src="/img/home.png" alt="" width={500} height={500} />
                     </div>
                     <div className={styles.category}>
                         <div className={styles.headCate}>
@@ -331,49 +570,49 @@ const SpendType: React.FC = () => {
                         </div>
                         <div className={styles.contentCate}>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: '#fd443b'}}>
+                                <div className={styles.icon} style={{ backgroundColor: '#fd443b' }}>
                                     <FontAwesomeIcon icon={faHouse} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: '#4807EA'}}>
+                                <div className={styles.icon} style={{ backgroundColor: '#4807EA' }}>
                                     <FontAwesomeIcon icon={faCar} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: 'yellow'}}>
+                                <div className={styles.icon} style={{ backgroundColor: 'yellow' }}>
                                     <FontAwesomeIcon icon={faCartShopping} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack} >
-                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2' }}>
                                     <FontAwesomeIcon icon={faCar} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: 'purple'}}>
+                                <div className={styles.icon} style={{ backgroundColor: 'purple' }}>
                                     <FontAwesomeIcon icon={faCar} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: '#EF5DA8'}}>
+                                <div className={styles.icon} style={{ backgroundColor: '#EF5DA8' }}>
                                     <FontAwesomeIcon icon={faCar} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: 'green'}}>
+                                <div className={styles.icon} style={{ backgroundColor: 'green' }}>
                                     <FontAwesomeIcon icon={faCar} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
                             </div>
                             <div className={styles.iconBack}>
-                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2'}}>
+                                <div className={styles.icon} style={{ backgroundColor: '#56CCF2' }}>
                                     <FontAwesomeIcon icon={faCar} />
                                 </div>
                                 <p className={styles.txtIcon}>Tiền nhà</p>
@@ -393,68 +632,46 @@ const SpendType: React.FC = () => {
                     </div>
                 </table>
                 <div className={styles.tableContainer}>
-                    <table className="min-w-full tao-bg">
-                        <thead>
-                            <tr className="bg-gray-100">
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Loại Thanh Toán</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Ngày Tháng</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody className={styles.bodyTbl}>
-                            <tr key={-1} className="relative hover:bg-[#fd3b003a] rounded-[10px] w-full">
-                                <div className="absolute w-full h-full"></div>
-                                <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
-                                    <div className={styles.nameIcon}>
-                                        <div className={`${styles.bgrIcon} bg-[#eeeeee]`}>
-                                            {/* <FontAwesomeIcon icon={faDog} className={styles.iconTable} /> */}
-                                        </div>
-                                        <p>Mặc định</p>
-                                    </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                {/* <td className="py-3 px-4">{item.estimatedAmount.toLocaleString("vi-VN")} VND</td>
-                                <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
-                                    {item.spent.toLocaleString("vi-VN")} VND
-                                </td>
-                                <td className={styles.btnTble}>
-                                    <button onClick={() => showModal(item)} className={styles.editBtn}>
-                                        <FontAwesomeIcon icon={faPenToSquare} />
-                                    </button>
-                                    <button className={styles.deleteBtn} onClick={() => handleDeleteClick(item)}>
-                                        <FontAwesomeIcon icon={faTrashCan} />
-                                    </button>
-                                </td> */}
-                            </tr>
-                            {filteredSpendTypes.slice(1).map((item, index) => (
-                                <tr key={index} className="relative hover:bg-[#fd3b003a] rounded-[10px]">
-                                    <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
-                                        <div className={styles.nameIcon}>
-                                            <div style={{ backgroundColor: item.color.colorCode }} className={styles.bgrIcon}>
-                                                {/* <FontAwesomeIcon icon={getIconFromSvgUrl(item.icon.svgUrl)} className={styles.iconTable} /> */}
-                                            </div>
-                                            <p>{item.name}</p>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-4">{Math.round(item.estimatedAmount).toLocaleString("vi-VN")} VND</td>
-                                    <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
-                                        {Math.round(item.spent).toLocaleString("vi-VN")} VND
-                                    </td>
-                                    <td className={styles.btnTble}>
-                                        <button onClick={() => showModal(item)} className={styles.editBtn}>
-                                            <FontAwesomeIcon icon={faPenToSquare} />
-                                        </button>
-                                        <button className={styles.deleteBtn} onClick={() => handleDeleteClick(item)}>
-                                            <FontAwesomeIcon icon={faTrashCan} />
-                                        </button>
-                                    </td>
+                    
+                    <div className={styles.tableContainer}>
+                        <table className="min-w-full tao-bg">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
+                                    <th className="text-left py-3 px-4 font-semibold text-sm">Loại Thanh Toán</th>
+                                    <th className="text-left py-3 px-4 font-semibold text-sm">Ngày Tháng</th>
+                                    <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền</th>
+                                    <th className="text-left py-3 px-4 font-semibold text-sm"></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className={styles.bodyTbl}>
+                                {expenditure.map((item, index) => (
+                                    <tr key={index} className="relative hover:bg-[#fd3b003a] rounded-[10px]">
+                                        <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
+                                            <div className={styles.nameIcon}>
+                                                <div style={{ backgroundColor: item.typeSprinding.colorCode }} className={styles.bgrIcon}>
+                                                    <FontAwesomeIcon icon={getIconFromSvgUrl(item.typeSprinding.svgUrl)} className={styles.iconTable} />
+                                                </div>
+                                                <p>{item.name}</p>
+                                            </div>
+                                        </td>
+                                        <td className="py-3 px-4">{item.typeSprinding.name}</td>
+                                        <td className="py-3 px-4">{new Date(item.dateSpinding).toLocaleDateString('en-GB').replace(/\//g, '-')}</td>
+                                        <td className="py-3 px-4">{Math.round(item.amount).toLocaleString("vi-VN")} VND</td>
+
+                                        <td className={styles.btnTble}>
+                                            <button onClick={() => showModal(item)} className={styles.editBtn}>
+                                                <FontAwesomeIcon icon={faPenToSquare} />
+                                            </button>
+                                            <button className={styles.deleteBtn} onClick={() => handleDeleteClick(item)}>
+                                                <FontAwesomeIcon icon={faTrashCan} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -517,13 +734,13 @@ const SpendType: React.FC = () => {
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
-                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..." 
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
-                            setEditSpendAmount(Number(value)); // Store as a number
-                        }}
-                        onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
-                        name="money" className={styles.inputMobal} />
+                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..."
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
+                                setEditSpendAmount(Number(value)); // Store as a number
+                            }}
+                            onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
+                            name="money" className={styles.inputMobal} />
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>
@@ -532,7 +749,7 @@ const SpendType: React.FC = () => {
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Biểu tượng</label>
-                        
+
                     </div>
                     <div className={styles.modalFooter}>
                         <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
