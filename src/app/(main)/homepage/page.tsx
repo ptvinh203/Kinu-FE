@@ -236,12 +236,17 @@ const SpendType: React.FC = () => {
     const [loading, setLoading] = useState(true);  // State to handle loading
     const totalEstimated = loading ? spendTypes.reduce((total, item) => total + item.estimatedAmount, 0) : 0;
 
-    const [editId, setEditId] = useState<any>();
     const [editType, setEditType] = useState<any>();
     const [editSpendAmount, setEditSpendAmount] = useState<any>();
     const [editAbbre, setEditAbbre] = useState<any>();
     const [editColor, setEditColor] = useState<any>();
     const [editIcon, setEditIcon] = useState<any>();
+
+    const [editId, setEditId] = useState<any>();
+    const [editExpenditureName, setEditExpenditureName] = useState<any>();
+    const [editExpenditureType, setEditExpenditureType] = useState<any>();
+    const [editExpenditureSpendAmount, setEditExpenditureSpendAmount] = useState<any>();
+    const [editExpenditureDate, setEditExpenditureDate] = useState<any>();
 
     const [expenditure, setExpenditure] = useState([
         {
@@ -259,6 +264,8 @@ const SpendType: React.FC = () => {
             }
         }
     ]);
+
+    const totalAmount = expenditure.reduce((acc, item) => acc + Number(item.amount), 0);
 
     const fetchExpenditure = async () => {
         try {
@@ -562,7 +569,24 @@ const SpendType: React.FC = () => {
 
                 <div className={styles.chart}>
                     <div className={styles.imgChart}>
-                        <img src="/img/home.png" alt="" width={500} height={500} />
+                        {/* <img src="/img/home.png" alt="" width={500} height={500}/> */}
+                        <div className={styles.headChart}>
+                            <img src="img/s1.png" alt="" width={150}/>
+                            <div className={styles.totalhead}>
+                                <p className={styles.txtTotal}>{totalAmount.toLocaleString('vi-VN')} VND</p>
+                                <p>Tổng chi tiêu</p>
+                            </div>
+                        </div>
+                        <hr style={{ margin: '10px' }} />
+                        <img src="img/s2.png" alt="" width={350}/>
+                        <div className={styles.bodyChart}>
+                            <div className={styles.totalBody}>
+                                <p className={styles.titleTxt}>Chi tiêu tuần này</p>
+                                <p className={styles.moneyTxt}>{totalAmount.toLocaleString('vi-VN')} VND</p>
+                                <img src="img/s4.png" alt="" width={125}/>
+                            </div>
+                            <img src="img/s3.png" alt="" width={150} className={styles.imgChart3}/>
+                        </div>
                     </div>
                     <div className={styles.category}>
                         <div className={styles.headCate}>
@@ -728,29 +752,80 @@ const SpendType: React.FC = () => {
                         <Image src="/icons/logo.svg" alt="logo" width={50} height={50} />
                         <p className={styles.titleMobal}>Chỉnh Sửa Loại Chi Tiêu</p>
                     </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Tên loại chi tiêu</label>
-                        <input type="text" value={editType} placeholder="Write here..." onChange={(e) => setEditType(e.target.value)} name="name" className={styles.inputMobal} />
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <input
+                                type="text"
+                                value={editExpenditureName} // Sử dụng spendName thay vì spendType
+                                onChange={(e) => setEditExpenditureName(e.target.value)} // Cập nhật state cho spendName
+                                className={styles.inputLo}
+                                required
+                                autoComplete="off"
+                            />
+                            <label htmlFor="spendName" className={styles.text}>
+                                Tên khoản chi tiêu
+                            </label>
+                        </div>
                     </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
-                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..."
-                            onChange={(e) => {
-                                const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
-                                setEditSpendAmount(Number(value)); // Store as a number
-                            }}
-                            onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
-                            name="money" className={styles.inputMobal} />
-                    </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>
-                        <input type="text" value={editAbbre} placeholder="Write here..." onChange={(e) => setEditAbbre(e.target.value)}
-                            name="symbol" className={styles.inputMobal} />
-                    </div>
-                    <div className={styles.coolinput}>
-                        <label htmlFor="input" className={styles.text}>Biểu tượng</label>
 
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <select
+                                value={editExpenditureType}
+                                onChange={(e) => {
+                                    const value = e.target.value; // Lấy giá trị được chọn
+                                    setEditExpenditureType(value); // Cập nhật state cho spendType
+                                }}
+                                className={styles.inputLo}
+                                required
+                            >
+                                <option value="" disabled></option>
+                                {spendTypes.map((option) => (
+                                    <option key={option.id} value={option.id}>
+                                        {option.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <label htmlFor="spendType" className={styles.text}>
+                                Loại chi tiêu
+                            </label>
+                        </div>
                     </div>
+
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <input
+                                type="text"
+                                value={Math.round(editExpenditureSpendAmount != null ? editExpenditureSpendAmount : 0).toLocaleString('vi-VN')}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
+                                    setEditExpenditureSpendAmount(Number(value)); // Store as a number
+                                }}
+                                onBlur={() => setEditExpenditureSpendAmount(Math.round(editExpenditureSpendAmount != null ? editExpenditureSpendAmount : 0))}
+                                className={styles.inputLo}
+                                required
+                                autoComplete="off"
+                            />
+                            <label htmlFor="email" className={styles.text}>
+                                Số tiền
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="mb-3">
+                        <div className={styles.inputGroup}>
+                            <input
+                                type="date"
+                                value={editExpenditureDate || ""}
+                                onChange={(e) => setEditExpenditureDate(e.target.value)}
+                                className={styles.inputLo}
+                                required
+                                autoComplete="off"
+                                placeholder=" Ngày tháng"
+                            />
+                        </div>
+                    </div>
+
                     <div className={styles.modalFooter}>
                         <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
                             Lưu thông tin

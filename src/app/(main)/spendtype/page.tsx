@@ -632,7 +632,7 @@ const SpendType: React.FC = () => {
                                         <div className={`${styles.bgrIcon} bg-[#eeeeee]`}>
                                             <FontAwesomeIcon icon={faDog} className={styles.iconTable} />
                                         </div>
-                                        <p>Mặc định</p>
+                                        <p>Chi tiêu khác</p>
                                     </div>
                                 </td>
                                 <td></td>

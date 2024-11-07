@@ -245,8 +245,12 @@ const SpendType: React.FC = () => {
                 name: "",
                 estimatedAmount: 0,
                 abbreviation: "",
-                colorCode: "",
-                svgUrl: "",
+                color:{
+                    colorCode: "",
+                },
+                icon: {
+                    svgUrl: "",
+                }
             }
         }
     ]);
@@ -440,15 +444,14 @@ const SpendType: React.FC = () => {
         return !isNaN(Number(str)) && !isNaN(parseFloat(str));
     };
 
-    // Lọc các loại chi tiêu dựa trên từ khóa tìm kiếm
-    const filteredSpendTypes = loading ? [] : spendTypes.filter((item) => {
+    const filteredHistory = loading ? [] : expenditure.filter((item) => {
         const searchLower = searchTerm.toLowerCase();
 
         const matchesName = item.name.toLowerCase().includes(searchLower);
 
         const matchesAmount =
             isNumeric(searchTerm) &&
-            (item.estimatedAmount.toString().includes(searchTerm) || item.spent.toString().includes(searchTerm));
+            (item.amount.toString().includes(searchTerm) || item.typeSprinding.name.includes(searchTerm));
 
         return matchesName || matchesAmount;
     });
@@ -623,12 +626,12 @@ const SpendType: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className={styles.bodyTbl}>
-                            {expenditure.map((item, index) => (
+                            {filteredHistory.map((item, index) => (
                                 <tr key={index} className="relative hover:bg-[#fd3b003a] rounded-[10px]">
                                     <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                         <div className={styles.nameIcon}>
-                                            <div style={{ backgroundColor: item.typeSprinding.colorCode }} className={styles.bgrIcon}>
-                                                <FontAwesomeIcon icon={getIconFromSvgUrl(item.typeSprinding.svgUrl)} className={styles.iconTable} />
+                                            <div style={{ backgroundColor: item.typeSprinding.color.colorCode }} className={styles.bgrIcon}>
+                                                <FontAwesomeIcon icon={getIconFromSvgUrl(item.typeSprinding.icon.svgUrl)} className={styles.iconTable} />
                                             </div>
                                             <p>{item.name}</p>
                                         </div>
