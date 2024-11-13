@@ -76,7 +76,7 @@ const Login = () => {
                                 required
                             />
                             <label htmlFor="password" className={styles.text}>
-                                Password
+                                Nhập mật khẩu của bạn
                             </label>
                             <button
                                 type="button"
@@ -99,7 +99,7 @@ const Login = () => {
                         </button>
                     </form>
                     <div className={styles.regisLink}>
-                        <p className={styles.textRegis}>Chưa có tài khoản</p>
+                        <p className={styles.textRegis}>Chưa có tài khoản?</p>
                         <a href="#" className={styles.linkRegis}>
                             Đăng ký
                         </a>

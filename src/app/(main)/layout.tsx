@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import Header from '@/components/Header';
-import SideBar from '@/components/SideBar';
+import SideBar from '@/components/SideBar/SideBar';
 import styles from './layout.module.scss';
 
 const Layout = ({ children }: { children: ReactNode }) => {

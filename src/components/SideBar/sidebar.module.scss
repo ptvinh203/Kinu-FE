@@ -1,0 +1,30 @@
+.icon {
+    background-color: #FFFBF3;
+    padding: 10px;
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    transition: all 0.3s ease;
+    color: black;
+}
+
+.icon img{
+    filter: brightness(0) saturate(100%) invert(0); /* black */
+}
+
+.icon_hover:hover {
+    background-color: #FFF0D3;
+}
+
+.icon_hover:hover img{
+    filter: brightness(0) saturate(100%) invert(0); /* black */
+}
+
+.icon_select {
+    background-color: var(--light-yellow);
+    color: white;  
+}
+
+.icon_select img {
+    filter: brightness(0) saturate(100%) invert(1); /* black */
+}
