@@ -8,7 +8,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, Label } from
 const DonutChart: React.FC = () => {
   
   const [spendTypes, setSpendTypes] = useState([
-    { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, spendAmount: 1000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
+    { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, spentAmount: 1000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
   ]);
   
   const totalValue = spendTypes.reduce((acc, entry) => acc + entry.spentAmount, 0);

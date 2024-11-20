@@ -71,7 +71,7 @@ const Header = () => {
             <Image src="/icons/logo.svg" alt="logo" width={50} height={50} className='cursor-pointer' onClick={() => router.push('/homepage')} />
             <div className="px-5 flex flex-col justify-center">
                     <div className="text-[20px] font-[500]">KinU</div>
-                    <div className="text-[12px] font-[400]">Quản lý chi tiêu</div>
+                    <div className="text-[14px] font-[400]">Quản lý chi tiêu</div>
                 </div>
             </div>
             <div className="px-5 flex justify-center items-center gap-3">

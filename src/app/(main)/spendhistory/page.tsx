@@ -796,9 +796,9 @@ const SpendType: React.FC = () => {
                     </div>
 
                     <div className={styles.modalFooter}>
-                        <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
+                        <button type="button" onClick={handleOk} className={styles.btnMobal}>
                             Lưu thông tin
-                        </Button>
+                        </button>
                     </div>
                 </div>
             </Modal>
