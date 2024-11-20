@@ -63,7 +63,7 @@ const SpendChart: React.FC = () => {
   return (
     <div className="flex w-full h-full p-0 space-x-10 tao-bg">
       {/* Sidebar Thêm loại chi tiêu */}
-      <div className="w-[20%] p-5 pink-bg rounded-lg h-full flex flex-col justify-between">
+      <div className="w-[450px] p-5 pink-bg rounded-lg h-full flex flex-col justify-between">
         <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
           <Image
             className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]"

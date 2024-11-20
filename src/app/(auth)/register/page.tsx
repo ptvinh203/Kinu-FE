@@ -42,6 +42,25 @@ const Register = () => {
         console.log("email:", email);
         console.log("Mat khau:", password);
         console.log("Mat khau nhap lai:", repassword);
+
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/account`, {
+            email,
+            password,
+            username: "default",
+            fullname: "full",
+            phone: "000000",
+            birthday: "2003-06-17",
+            gender: "0"
+        })
+        .then(res => {
+            console.log(res)
+            // localStorage.setItem('userId', res.data.data.id)
+            // router.push('/spendtype')
+        })
+        .catch(err => {
+            console.log(err)
+            toast.error(err.response.data.message)
+        })
     };
 
 
