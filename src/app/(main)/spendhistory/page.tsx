@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Modal } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
-import styles from './spendtype.module.scss'
+import styles from './spendtype.module.scss';
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
@@ -796,9 +796,9 @@ const SpendType: React.FC = () => {
                     </div>
 
                     <div className={styles.modalFooter}>
-                        <button type="button" onClick={handleOk} className={styles.btnMobal}>
+                        <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
                             Lưu thông tin
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>

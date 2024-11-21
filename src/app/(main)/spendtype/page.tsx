@@ -618,10 +618,10 @@ const SpendType: React.FC = () => {
                     <table className="min-w-full tao-bg">
                         <thead>
                             <tr className="bg-gray-100">
-                                <th className="text-left py-3 px-4 font-semibold text-[16px]">Tên Chi Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-[16px]">Số Tiền Dự Kiến</th>
-                                <th className="text-left py-3 px-4 font-semibold text-[16px]">Số Tiền Đã Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-[16px]">Hành động</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
                             </tr>
                         </thead>
                         <tbody className={styles.bodyTbl}>
@@ -781,9 +781,9 @@ const SpendType: React.FC = () => {
                         </div>
                     </div>
                     <div className={styles.modalFooter}>
-                        <button type="button" onClick={handleOk} className={styles.btnMobal}>
+                        <Button type="primary" onClick={handleOk} className={styles.btnMobal}>
                             Lưu thông tin
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>

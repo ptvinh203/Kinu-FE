@@ -19,7 +19,7 @@ const SideBar = () => {
         { src: "/icons/menu_sidebar/Category.svg", alt: "Category", route: "/spendtype" },
         { src: "/icons/menu_sidebar/Star.svg", alt: "Star", route: "/spendtype" },
         { src: "/icons/menu_sidebar/Paper.svg", alt: "Paper", route: "/spendhistory" },
-        { src: "/icons/menu_sidebar/Chart.svg", alt: "Chart", route: "/spendchar" },
+        { src: "/icons/menu_sidebar/Chart.svg", alt: "Chart", route: "/spendtype" },
         { src: "/icons/menu_sidebar/Ticket.svg", alt: "Ticket", route: "/wallet" },
         { src: "/icons/menu_sidebar/Setting.svg", alt: "Setting", route: "/spendtype" }
     ];

@@ -5,6 +5,7 @@ import Notification from './Notification/notification';
 import axios from 'axios';
 import NotificationItem from "./Notification/notification.interface";
 import { useRouter } from 'next/navigation';
+import { io } from "socket.io-client";
 
 const Header = () => {
     const router = useRouter();
@@ -18,10 +19,11 @@ const Header = () => {
     const closeNotification = () => {
         setNotificationOpen(false);
     };
-
+    const notificationsRead = notifications.filter((n) => n.read);
+    const notificationsUnread = notifications.filter((n) => !n.read);
     const fetchNoti = () => {
         const userId = localStorage.getItem('userId');
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/notification?userId=${userId}`)
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/notification/all?userId=${userId}`)
             .then((res) => {
                 setNotifications(res.data.data);
             })
@@ -62,24 +64,38 @@ const Header = () => {
 
     useEffect(() => {
         fetchNoti();
+
+        const userId = localStorage.getItem('userId')
+        const socket = io(`https://kinu.onrender.com`, {
+            transports: ["websocket"],
+            query: { userId },
+        });
+
+        console.log(socket);
+
+        socket.on('notification', (newNotification: NotificationItem) => {
+            console.log('fetch on change')
+            fetchNoti();
+        });
     }, []); // Adding an empty dependency array ensures fetchNoti runs only on initial render
 
 
     return (
         <div className="flex justify-between items-center border-b-gray-200 border-b-[1px]">
             <div className="px-5 py-3 flex gap-0">
-            <Image src="/icons/logo.svg" alt="logo" width={50} height={50} className='cursor-pointer' onClick={() => router.push('/homepage')} />
-            <div className="px-5 flex flex-col justify-center">
+                <Image src="/icons/logo.svg" alt="logo" width={50} height={50} className='cursor-pointer' onClick={() => router.push('/homepage')} />
+                <div className="px-5 flex flex-col justify-center">
                     <div className="text-[20px] font-[500]">KinU</div>
-                    <div className="text-[14px] font-[400]">Quản lý chi tiêu</div>
+                    <div className="text-[12px] font-[400]">Quản lý chi tiêu</div>
                 </div>
             </div>
             <div className="px-5 flex justify-center items-center gap-3">
-                <button className="icon" onClick={toggleNotification} aria-label="Thông báo">
+                <button className="bg-orange-500 w-10 h-10 flex justify-center items-center rounded-full" onClick={toggleNotification} aria-label="Thông báo">
                     <Image src="/icons/menu_header/notification.svg" alt="notification" width={20} height={20} />
                 </button>
-                {isNotificationOpen && <Notification notifications={notifications} onClose={closeNotification} onNotificationRead={ handleRead } onNotificationReadAll={ markAllAsRead } />}
-                <div className="icon">
+                {isNotificationOpen && <Notification notifications={notifications} notificationsRead={notificationsRead}
+                    notificationsUnread={notificationsUnread} onClose={closeNotification} onNotificationRead={handleRead} onNotificationReadAll={markAllAsRead} />}
+                <div className="bg-orange-500 w-10 h-10 flex justify-center items-center rounded-full">
                     <Image src="/icons/menu_header/chart.svg" alt="chart" width={20} height={20} />
                 </div>
                 <div className="avatar">

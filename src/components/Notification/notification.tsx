@@ -1,21 +1,42 @@
+import { useState } from "react";
 import NotificationItem from "./notification.interface";
+
 interface NotificationProps {
     notifications: NotificationItem[];
+    notificationsRead: NotificationItem[];
+    notificationsUnread: NotificationItem[];
     onClose: () => void;
     onNotificationRead: (notificationId: number) => void;
     onNotificationReadAll: () => void;
 }
 
-const Notification: React.FC<NotificationProps> = ({ notifications, onClose, onNotificationRead, onNotificationReadAll }) => {
+const Notification: React.FC<NotificationProps> = ({
+    notifications,
+    notificationsRead,
+    notificationsUnread,
+    onClose,
+    onNotificationRead,
+    onNotificationReadAll,
+}) => {
+    const [filter, setFilter] = useState("all"); // State to handle the selected filter option
+
     const markAllAsRead = () => {
         onNotificationReadAll();
     };
 
-    const allRead = notifications.every(notification => notification.read);
+    const allRead = notifications.every((notification) => notification.read);
 
     const toggleReadStatus = (id: number) => {
         onNotificationRead(id);
     };
+
+    // Filter notifications based on the selected filter option
+    const filteredNotifications =
+        filter === "all"
+            ? notifications
+            : filter === "read"
+            ? notificationsRead
+            : notificationsUnread;
 
     return (
         <div className="absolute right-5 top-16 bg-white border border-gray-200 rounded-lg shadow-lg w-96 z-50 pt-3">
@@ -26,7 +47,11 @@ const Notification: React.FC<NotificationProps> = ({ notifications, onClose, onN
                 </button>
             </div>
             <div className="flex justify-between mt-4 px-5">
-                <select className="text-blue-600 text-sm">
+                <select
+                    className="text-blue-600 text-sm"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)} // Update filter state
+                >
                     <option value="all">Tất cả</option>
                     <option value="read">Đã đọc</option>
                     <option value="unread">Chưa đọc</option>
@@ -37,20 +62,40 @@ const Notification: React.FC<NotificationProps> = ({ notifications, onClose, onN
                 </button>
             </div>
             <div className="mt-4 flex flex-col">
-                {notifications.length === 0 ? (
-                    <p className="text-center text-gray-500 italic">Không có thông báo nào</p>
+                {filteredNotifications.length === 0 ? (
+                    <p className="text-center text-gray-500 italic">
+                        Không có thông báo nào
+                    </p>
                 ) : (
-                    notifications.map((notification) => (
-                        <div key={notification.id} className={`flex items-center space-x-3 ${!notification.read ? 'font-semibold' : 'text-gray-700'} ${notification.typeNotifiction === "OverSpending" ? 'bg-red-300' : 'bg-white'} px-5 py-2`}>
-                            {/* <Image src="/icons/menu_header/notification_icon.svg" alt="notification icon" width={20} height={20} /> */}
+                    filteredNotifications.map((notification) => (
+                        <div
+                            key={notification.id}
+                            className={`flex items-center space-x-3 ${
+                                !notification.read ? "font-semibold" : "text-gray-700"
+                            } ${
+                                notification.typeNotifiction === "OverSpending"
+                                    ? "bg-red-300"
+                                    : "bg-white"
+                            } px-5 py-2`}
+                        >
                             <div>
-                                <p className={`text-sm ${!notification.read ? 'text-black' : 'text-gray-700'}`}>{notification.content}</p>
+                                <p
+                                    className={`text-sm ${
+                                        !notification.read ? "text-black" : "text-gray-700"
+                                    }`}
+                                >
+                                    {notification.content}
+                                </p>
                                 <p className="text-xs text-gray-500 italic">
-                                    {new Date(notification.createdAt).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                                    {new Date(notification.createdAt)
+                                        .toLocaleDateString("en-GB")
+                                        .replace(/\//g, "-")}
                                 </p>
                             </div>
                             <button
-                                onClick={() => !notification.read && toggleReadStatus(notification.id)}
+                                onClick={() =>
+                                    !notification.read && toggleReadStatus(notification.id)
+                                }
                                 className="ml-auto text-blue-600 text-sm"
                             >
                                 {notification.read ? (

@@ -106,13 +106,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 10px;
   .btnMobal {
     width: 100%;
     border-radius: 10px;
+    padding: 20px;
     margin-top: 20px;
     background-color: #ffc248;
-    color: white;
-    font-size: 15px;
   }
 }
 .btnTble{
