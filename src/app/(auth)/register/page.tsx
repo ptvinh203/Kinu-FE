@@ -36,12 +36,27 @@ const Register = () => {
             return;
         }
 
-        // Xóa thông báo lỗi nếu trước đó đã có lỗi
         setError("");
-        console.log("Name:", name);
-        console.log("email:", email);
-        console.log("Mat khau:", password);
-        console.log("Mat khau nhap lai:", repassword);
+
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/account`, {
+            username: name,
+            email,
+            password,
+            fullname: "Tran Minh Quan",
+            phone: "0948628477",
+            birthday: "2003-08-05",
+            gender: 0
+        })
+        .then(res => {
+            console.log(res)
+            // localStorage.setItem('userId', res.data.data.id)
+            // router.push('/spendtype')
+            toast.success("Đăng ký thành công");
+        })
+        .catch(err => {
+            console.log(err)
+            toast.error(err.response.data.message)
+        })
     };
 
 
