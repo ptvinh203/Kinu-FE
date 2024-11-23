@@ -62,6 +62,10 @@ const Header = () => {
         setNotifications(updatedNotifications);
     };
 
+    const goToSpendChar = () => {
+        router.push('/spendchar')
+    }
+
     useEffect(() => {
         fetchNoti();
 
@@ -90,12 +94,16 @@ const Header = () => {
                 </div>
             </div>
             <div className="px-5 flex justify-center items-center gap-3">
-                <button className="bg-orange-500 w-10 h-10 flex justify-center items-center rounded-full" onClick={toggleNotification} aria-label="Thông báo">
+                <button className="bg-[#FFC248] w-10 h-10 flex justify-center items-center rounded-full relative" onClick={toggleNotification} aria-label="Thông báo">
                     <Image src="/icons/menu_header/notification.svg" alt="notification" width={20} height={20} />
+                    {notificationsUnread.length > 0 ?
+                        <div className="absolute right-0 top-0 w-3 h-3 bg-red-500 rounded-full"></div> :
+                        <div></div>
+                    }
                 </button>
                 {isNotificationOpen && <Notification notifications={notifications} notificationsRead={notificationsRead}
                     notificationsUnread={notificationsUnread} onClose={closeNotification} onNotificationRead={handleRead} onNotificationReadAll={markAllAsRead} />}
-                <div className="bg-orange-500 w-10 h-10 flex justify-center items-center rounded-full">
+                <div className="bg-[#FFC248] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer" onClick={goToSpendChar}>
                     <Image src="/icons/menu_header/chart.svg" alt="chart" width={20} height={20} />
                 </div>
                 <div className="avatar">

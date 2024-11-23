@@ -62,7 +62,7 @@ import { userInfo } from 'os';
 
 const SpendType: React.FC = () => {
     const [spendTypes, setSpendTypes] = useState([
-        { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spent: 3000000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
+        { id: 1, name: 'Tiền nhà', estimatedAmount: 3000000, spentAmount: 3000000, color: { id: 1, name: "", colorCode: "" }, icon: { id: 1, name: "", svgUrl: "" } },
     ]);
 
     const [colorOptions, setColorOptions] = useState([
@@ -475,10 +475,12 @@ const SpendType: React.FC = () => {
 
         const matchesAmount =
             isNumeric(searchTerm) &&
-            (item.estimatedAmount.toString().includes(searchTerm) || item.spent.toString().includes(searchTerm));
+            (item.estimatedAmount.toString().includes(searchTerm) || item.spentAmount.toString().includes(searchTerm));
 
         return matchesName || matchesAmount;
     });
+
+    const walletId = localStorage.getItem('walletId')
 
     if (loading) {
         return <p>Loading spend types...</p>;
@@ -498,7 +500,11 @@ const SpendType: React.FC = () => {
                                 <p className="text-sm font-md">Tổng số tiền</p>
                             </div>
                         </div>
-
+                        {
+                        walletId != null ?
+                            <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
+                            : <div></div>
+                        }
                     </div>
                 </div>
 
@@ -662,8 +668,8 @@ const SpendType: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="py-3 px-4">{Math.round(item.estimatedAmount).toLocaleString("vi-VN")} VND</td>
-                                    <td className={`py-3 px-4 ${item.spent > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
-                                        {Math.round(item.spent).toLocaleString("vi-VN")} VND
+                                    <td className={`py-3 px-4 ${item.spentAmount > item.estimatedAmount ? "text-red-500" : "text-green-500"}`}>
+                                        {Math.round(item.spentAmount).toLocaleString("vi-VN")} VND
                                     </td>
                                     <td className={styles.btnTble}>
                                         <button onClick={() => showModal(item)} className={styles.editBtn}>

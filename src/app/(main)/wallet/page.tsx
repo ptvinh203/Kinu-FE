@@ -46,6 +46,7 @@ const Wallet = () => {
   
       console.log(response);
       toast.success("Hủy liên kết thành công");
+      localStorage.removeItem('walletId')
     } catch (err) {
       console.error(err);
       if (err.response?.data?.message) {

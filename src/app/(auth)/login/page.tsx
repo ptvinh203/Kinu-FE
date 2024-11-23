@@ -36,7 +36,13 @@ const Login = () => {
         .then(res => {
             console.log(res)
             localStorage.setItem('userId', res.data.data.id)
-            router.push('/spendtype')
+            if (res.data.data.wallets.length > 0){
+                localStorage.setItem('walletId', res.data.data.wallets[0].id)
+            }
+            else{
+                localStorage.removeItem('walletId')
+            }
+            router.push('/homepage')
         })
         .catch(err => {
             console.log(err)

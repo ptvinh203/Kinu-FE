@@ -45,23 +45,41 @@ const SpendChart: React.FC = () => {
 
       data.forEach((item: any) => {
         const monthYear = dayjs(item.dateSpinding).format("MM-YYYY");
+        const currentMonth = dayjs(item.dateSpinding).month(); // Month index (0-11)
+        const currentYear = dayjs(item.dateSpinding).year();
         const day = dayjs(item.dateSpinding).date();
         const amount = parseFloat(item.amount);
 
         totalAmount += amount; // Calculate the total amount
+
+        // Determine the previous month and year
+        const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Handle January (month 0)
+        const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+        const previousMonthYear = `${(previousMonth + 1).toString().padStart(2, "0")}-${previousYear}`;
 
         // Initialize the month-year key if it doesn't exist
         if (!groupedData[monthYear]) {
           groupedData[monthYear] = [];
         }
 
+        // Sum up all amounts for the previous month
+        const lastMonthAmount = data
+          .filter((entry: any) => {
+            const entryMonth = dayjs(entry.dateSpinding).month();
+            const entryYear = dayjs(entry.dateSpinding).year();
+            return entryMonth === previousMonth && entryYear === previousYear;
+          })
+          .reduce((sum: number, entry: any) => sum + parseFloat(entry.amount), 0);
+
         // Push data for the specific day into the corresponding month-year group
         groupedData[monthYear].push({
           day,
-          lastMonth: 0, // Placeholder (populate if needed)
+          lastMonth: 0, // Sum of the previous month's amount
           currentMonth: amount,
         });
       });
+
 
       setTotal(totalAmount); // Update total state
       setDataByMonth(groupedData);
@@ -82,6 +100,7 @@ const SpendChart: React.FC = () => {
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
+  const walletId = localStorage.getItem('walletId')
 
   return (
     <div className="flex w-full h-full p-0 space-x-10 tao-bg">
@@ -110,6 +129,11 @@ const SpendChart: React.FC = () => {
                 <p className="text-sm font-md">Tổng chi phí</p>
               </div>
             </div>
+            {
+              walletId != null ?
+                <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
+                : <div></div>
+            }
           </div>
         </div>
       </div>

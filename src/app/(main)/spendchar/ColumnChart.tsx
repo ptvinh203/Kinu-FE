@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 
 const ColumnChart: React.FC = () => {
   const [chartData, setChartData] = useState([]);
-
+  const [isHaveData, setHaveData] = useState<boolean>(true);
   const fetchExpenditure = async () => {
     try {
       // Initialize monthly data with all months set to 0
@@ -39,6 +39,10 @@ const ColumnChart: React.FC = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/expenditure?userId=${userId}`
       );
+      if (response.data.message === "Chưa có loại chi tiêu") {
+        setHaveData(false);
+        return;
+      }
       const data = response.data.data;
 
       // Process data: group by month and sum values
@@ -68,23 +72,29 @@ const ColumnChart: React.FC = () => {
   }, []);
 
   return (
-    <ResponsiveContainer width="100%" height="80%">
-      <BarChart
-        data={chartData}
-        margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
-        <YAxis />
-        <Tooltip />
-        <Bar
-          dataKey="totalIncome"
-          fill="#ffc248"
-          isAnimationActive={false}
-          radius={[10, 10, 0, 0]} // Customize column corners
-        />
-      </BarChart>
-    </ResponsiveContainer>
+
+    isHaveData === true ?
+      <ResponsiveContainer width="100%" height="80%">
+        < BarChart
+          data={chartData}
+          margin={{ top: 20, right: 30, left: 0, bottom: 5 }
+          }
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Bar
+            dataKey="totalIncome"
+            name="Tổng chi tiêu"
+            fill="#ffc248"
+            isAnimationActive={false}
+            radius={[10, 10, 0, 0]} // Customize column corners
+          />
+        </BarChart >
+      </ResponsiveContainer >
+      : <div>Không có dữ liệu</div>
+
   );
 };
 

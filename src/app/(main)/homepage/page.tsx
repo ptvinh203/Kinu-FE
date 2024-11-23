@@ -58,6 +58,8 @@ import {
     faLayerGroup, faUsers, faGamepad, faBusinessTime,
     IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
+import { join } from 'path';
+import exp from 'constants';
 
 const SpendType: React.FC = () => {
     const iconMapping: Record<string, IconDefinition> = {
@@ -259,8 +261,15 @@ const SpendType: React.FC = () => {
                 name: "",
                 estimatedAmount: 0,
                 abbreviation: "",
-                colorCode: "",
-                svgUrl: "",
+                color: {
+                    colorCode: "",
+
+                },
+                icon: {
+                    id: "",
+                    name: "",
+                    svgUrl: "",
+                }
             }
         }
     ]);
@@ -491,6 +500,8 @@ const SpendType: React.FC = () => {
 
     const value = -9000000.0;
 
+    const walletId = localStorage.getItem('walletId')
+
     if (loading) {
         return <p>Loading spend types...</p>;
     }
@@ -509,7 +520,11 @@ const SpendType: React.FC = () => {
                                 <p className="text-sm font-md">Tổng chi phí</p>
                             </div>
                         </div>
-
+                        {
+                        walletId != null ?
+                            <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
+                            : <div></div>
+                        }
                     </div>
                 </div>
 
@@ -517,50 +532,31 @@ const SpendType: React.FC = () => {
                     <h3 className="text-[15px] mb-3 font-bold" style={{ color: 'red' }}>Các Khoản Chi Gần Nhất</h3>
                     <hr />
                     <div className={styles.historyToday}>
-                        <p className={styles.title}>Hôm nay</p>
-                        <div className={styles.item}>
-                            <div className={styles.icon}>
-                                <FontAwesomeIcon icon={faCar} />
+                        {expenditure.slice(0, 3).map((e, index) => (
+                            <div className={styles.item}
+                                key={index}>
+                                <div className={styles.icon} style={{ backgroundColor: e.typeSprinding.color.colorCode }}>
+                                    <FontAwesomeIcon icon={getIconFromSvgUrl(e.typeSprinding.icon.svgUrl)} />
+                                </div>
+                                <div className={styles.txt}>
+                                    <p className={styles.nametxt}>{e.name}</p>
+                                    <p className={styles.statustxt} style={{ color: '#00ff4c' }}>
+                                        Giao dịch thành công
+                                    </p>
+                                </div>
+                                <div
+                                    className={styles.money}
+                                    style={{
+                                        color: 'red'
+                                    }}
+                                >
+                                    <p>{(Math.round(e.amount != null ? e.amount : 0)).toLocaleString('vi-VN')}</p>
+                                    <p style={{ paddingLeft: '5px' }}>VNĐ</p>
+                                </div>
                             </div>
-                            <div className={styles.txt}>
-                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
-                                <p className={styles.statustxt} style={{ color: '#00ff4c' }}>Giao dịch thành công</p>
-                            </div>
-                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
-                                <p>{value.toLocaleString()}</p>
-                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
-                    <div className={styles.historyToday}>
-                        <p className={styles.title}>Hôm nay</p>
-                        <div className={styles.item}>
-                            <div className={styles.icon}>
-                                <FontAwesomeIcon icon={faCar} />
-                            </div>
-                            <div className={styles.txt}>
-                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
-                                <p className={styles.statustxt} style={{ color: '#00ff4c' }}>Giao dịch thành công</p>
-                            </div>
-                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
-                                <p>{value.toLocaleString()}</p>
-                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
-                            </div>
-                        </div>
-                        <div className={styles.item}>
-                            <div className={styles.icon}>
-                                <FontAwesomeIcon icon={faCar} />
-                            </div>
-                            <div className={styles.txt}>
-                                <p className={styles.nametxt}>Tiền Điện Tháng 8</p>
-                                <p className={styles.statustxt} style={{ color: '#00ff4c' }}>Giao dịch thành công</p>
-                            </div>
-                            <div className={styles.money} style={{ color: value > 0 ? '#00ff4c' : value < 0 ? 'red' : 'black' }}>
-                                <p>{value.toLocaleString()}</p>
-                                <p style={{ paddingLeft: '5px' }}>VNĐ</p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -571,21 +567,21 @@ const SpendType: React.FC = () => {
                     <div className={styles.imgChart}>
                         {/* <img src="/img/home.png" alt="" width={500} height={500}/> */}
                         <div className={styles.headChart}>
-                            <img src="img/s1.png" alt="" width={150}/>
+                            <img src="img/s1.png" alt="" width={150} />
                             <div className={styles.totalhead}>
                                 <p className={styles.txtTotal}>{totalAmount.toLocaleString('vi-VN')} VND</p>
                                 <p>Tổng chi tiêu</p>
                             </div>
                         </div>
                         <hr style={{ margin: '10px' }} />
-                        <img src="img/s2.png" alt="" width={350}/>
+                        <img src="img/s2.png" alt="" width={350} />
                         <div className={styles.bodyChart}>
                             <div className={styles.totalBody}>
                                 <p className={styles.titleTxt}>Chi tiêu tuần này</p>
                                 <p className={styles.moneyTxt}>{totalAmount.toLocaleString('vi-VN')} VND</p>
-                                <img src="img/s4.png" alt="" width={125}/>
+                                <img src="img/s4.png" alt="" width={125} />
                             </div>
-                            <img src="img/s3.png" alt="" width={150} className={styles.imgChart3}/>
+                            <img src="img/s3.png" alt="" width={150} className={styles.imgChart3} />
                         </div>
                     </div>
                     <div className={styles.category}>
@@ -656,7 +652,7 @@ const SpendType: React.FC = () => {
                     </div>
                 </table>
                 <div className={styles.tableContainer}>
-                    
+
                     <div className={styles.tableContainer}>
                         <table className="min-w-full tao-bg">
                             <thead>
@@ -673,8 +669,8 @@ const SpendType: React.FC = () => {
                                     <tr key={index} className="relative hover:bg-[#fd3b003a] rounded-[10px]">
                                         <td className="py-3 px-4 flex items-center space-x-2 z-[100]">
                                             <div className={styles.nameIcon}>
-                                                <div style={{ backgroundColor: item.typeSprinding.colorCode }} className={styles.bgrIcon}>
-                                                    <FontAwesomeIcon icon={getIconFromSvgUrl(item.typeSprinding.svgUrl)} className={styles.iconTable} />
+                                                <div style={{ backgroundColor: item.typeSprinding.color.colorCode }} className={styles.bgrIcon}>
+                                                    <FontAwesomeIcon icon={getIconFromSvgUrl(item.typeSprinding.icon.svgUrl)} className={styles.iconTable} />
                                                 </div>
                                                 <p>{item.name}</p>
                                             </div>

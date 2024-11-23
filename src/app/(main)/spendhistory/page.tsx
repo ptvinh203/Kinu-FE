@@ -235,26 +235,29 @@ const SpendType: React.FC = () => {
         }
     ]);
 
-    const [expenditure, setExpenditure] = useState([
-        {
-            id: 0,
-            name: "",
-            amount: 0,
-            dateSpinding: "",
-            typeSprinding: {
-                id: 0,
-                name: "",
-                estimatedAmount: 0,
-                abbreviation: "",
-                color:{
-                    colorCode: "",
-                },
-                icon: {
-                    svgUrl: "",
-                }
-            }
-        }
-    ]);
+    interface TypeSprinding {
+        id: number;
+        name: string;
+        estimatedAmount: number;
+        abbreviation: string;
+        color: {
+            colorCode: string;
+        };
+        icon: {
+            svgUrl: string;
+        };
+    }
+
+    interface Expenditure {
+        id: number;
+        name: string;
+        amount: number;
+        dateSpinding: string;
+        typeSprinding: TypeSprinding;
+    }
+
+    const [expenditure, setExpenditure] = useState<Expenditure[]>([]);
+
 
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
@@ -464,6 +467,8 @@ const SpendType: React.FC = () => {
         { value: 'Ăn uống', label: 'Ăn uống' },
     ];
 
+    const walletId = localStorage.getItem('walletId')
+
     if (loading) {
         return <p>Loading spend types...</p>;
     }
@@ -482,7 +487,11 @@ const SpendType: React.FC = () => {
                                 <p className="text-sm font-md">Tổng chi phí</p>
                             </div>
                         </div>
-
+                        {
+                        walletId != null ?
+                            <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
+                            : <div></div>
+                        }
                     </div>
                 </div>
 
@@ -549,7 +558,7 @@ const SpendType: React.FC = () => {
                                 </label>
                             </div>
                         </div>
-                                    {/*của Thắng*/}
+                        {/*của Thắng*/}
                         {/* <div className="mb-3">
                             <div className={styles.inputGroup}>
                                 <input
@@ -563,16 +572,16 @@ const SpendType: React.FC = () => {
                                 />
                             </div>
                         </div> */}
-                                    {/*của Thịnh*/}
+                        {/*của Thịnh*/}
                         <div className="mb-3">
                             <div className={styles.inputGroup}>
-                            <DatePicker
-                                selected={expenditureDate || ""}
-                                onChange={(e) => setExpenditureDate(e)}
-                                dateFormat="dd/MM/yyyy"
-                                className={styles.inputLo}
-                                placeholderText="Chọn ngày" // Thêm thuộc tính placeholderText
-                            />
+                                <DatePicker
+                                    selected={expenditureDate || ""}
+                                    onChange={(e) => setExpenditureDate(e)}
+                                    dateFormat="dd/MM/yyyy"
+                                    className={styles.inputLo}
+                                    placeholderText="Chọn ngày" // Thêm thuộc tính placeholderText
+                                />
                             </div>
                         </div>
 
@@ -600,7 +609,7 @@ const SpendType: React.FC = () => {
                                 </div>
                                 <p className={styles.txtIcon}>{item.name}</p>
                             </div>
-                            ))}
+                        ))}
                     </div>
 
                 </div>
