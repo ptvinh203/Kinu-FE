@@ -33,21 +33,21 @@ const Login = () => {
             email,
             password
         })
-        .then(res => {
-            console.log(res)
-            localStorage.setItem('userId', res.data.data.id)
-            if (res.data.data.wallets.length > 0){
-                localStorage.setItem('walletId', res.data.data.wallets[0].id)
-            }
-            else{
-                localStorage.removeItem('walletId')
-            }
-            router.push('/homepage')
-        })
-        .catch(err => {
-            console.log(err)
-            toast.error(err.response.data.message)
-        })
+            .then(res => {
+                console.log(res)
+                localStorage.setItem('userId', res.data.data.id)
+                if (res.data.data.wallets.length > 0) {
+                    localStorage.setItem('walletId', res.data.data.wallets[0].id)
+                }
+                else {
+                    localStorage.removeItem('walletId')
+                }
+                router.push('/homepage')
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error(err.response.data.message)
+            })
     };
 
     const toRegister = () => {
@@ -100,7 +100,7 @@ const Login = () => {
                             <p style={{ color: "#440000", fontSize: "10px" }}>{error}</p>
                         )}
                         <div className={styles.content}>
-                            <a href="/forgot" className={styles.passLink}>
+                            <a href="/#" className={styles.passLink}>
                                 Quên mật khẩu?
                             </a>
                         </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import styles from "./spendchar.module.scss";
 import React, { useState, useEffect } from "react";
 import {
@@ -18,6 +17,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import dayjs from "dayjs";
+import CurrentBalance from "@/components/CurrentBalance";
 
 const SpendChart: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -100,42 +100,12 @@ const SpendChart: React.FC = () => {
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
-  const walletId = localStorage.getItem('walletId')
 
   return (
     <div className="flex w-full h-full p-0 space-x-10 tao-bg">
       {/* Sidebar Thêm loại chi tiêu */}
       <div className="w-[450px] p-5 pink-bg rounded-lg h-full flex flex-col justify-between">
-        <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
-          <Image
-            className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]"
-            src="/icons/spendtype/decoration.svg"
-            alt="decoration"
-            width={430}
-            height={500}
-          />
-          <div className="top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
-            <h2 className="text-[13px] font-semibold">SỐ DƯ TỪ VÍ ĐIỆN TỬ</h2>
-            <div className="flex gap-5">
-              <Image
-                className=""
-                src="/icons/spendtype/wallet.svg"
-                alt="wallet"
-                width={50}
-                height={50}
-              />
-              <div>
-                <p className={styles.money}>0 VND</p>
-                <p className="text-sm font-md">Tổng chi phí</p>
-              </div>
-            </div>
-            {
-              walletId != null ?
-                <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
-                : <div></div>
-            }
-          </div>
-        </div>
+        <CurrentBalance />
       </div>
 
       {/* Nội dung Biểu đồ */}

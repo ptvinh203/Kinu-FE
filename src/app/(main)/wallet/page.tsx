@@ -2,20 +2,31 @@
 
 import { useState } from 'react';
 import styles from './wallet.module.scss';
-import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const Wallet = () => {
+  const router = useRouter();
   // State variables for each input
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [pinCode, setPin] = useState('');
+  const [walletId, setWalletId] = useState(localStorage.getItem('walletId'));
 
   // Function to handle linking payment
   const linkPayment = async () => {
     const userId = localStorage.getItem('userId');
+
+    if (phoneNumber === '') {
+      toast.error('Vui lòng nhập số điện thoại')
+      return;
+    }
+
+    if (pinCode === '') {
+      toast.error('Vui lòng nhập mã PIN')
+      return;
+    }
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/ewallet`, {
@@ -29,7 +40,9 @@ const Wallet = () => {
       const data = response.data.data;
       console.log('Linked Successfully:', data);
       localStorage.setItem('walletId', data.id)
+      setWalletId(data.id)
       toast.success('Liên kết thành công')
+      router.push('/spendhistory')
     } catch (error) {
       console.error('Error linking payment:', error);
       toast.error(error.response.data.message);
@@ -39,14 +52,15 @@ const Wallet = () => {
   const unLink = async () => {
     const walletId = localStorage.getItem('walletId');
     try {
-  
+
       // Send the DELETE request
       const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/ewallet/unlink/${walletId}`, {
       });
-  
+
       console.log(response);
       toast.success("Hủy liên kết thành công");
       localStorage.removeItem('walletId')
+      setWalletId(null);
     } catch (err) {
       console.error(err);
       if (err.response?.data?.message) {
@@ -105,8 +119,9 @@ const Wallet = () => {
         <button
           onClick={linkPayment} // Call linkPayment when clicked
           className="mt-3 w-full p-2 light-yellow-bg text-white rounded-[0.78rem] transition-opacity duration-300 hover:opacity-50 justify-center flex items-center cursor-pointer"
+          disabled={walletId !== null}
         >
-          Liên kết
+          {walletId !== null ? 'Đã liên kết' : 'Liên kết'}
         </button>
       </div>
 

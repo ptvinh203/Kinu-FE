@@ -59,6 +59,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { userInfo } from 'os';
+import CurrentBalance from '@/components/CurrentBalance';
 
 const SpendType: React.FC = () => {
     const [spendTypes, setSpendTypes] = useState([
@@ -92,7 +93,7 @@ const SpendType: React.FC = () => {
     const [spendAmount, setSpendAmount] = useState<any>();
     const [abbre, setAbbre] = useState("");
     const [loading, setLoading] = useState(true);  // State to handle loading
-    const totalEstimated = loading ? spendTypes.reduce((total, item) => total + item.estimatedAmount, 0) : 0;
+    const totalEstimated = localStorage.getItem('currentBalance') != null ? Number(localStorage.getItem('currentBalance')) : 0;
 
     const [editId, setEditId] = useState<any>();
     const [editType, setEditType] = useState<any>();
@@ -128,116 +129,116 @@ const SpendType: React.FC = () => {
         faGolfBallTee,
         faFootball,
         faBicycle,
-        faHouse, 
-        faUser, 
-        faCheck, 
-        faDownload, 
-        faImage, 
-        faBars, 
+        faHouse,
+        faUser,
+        faCheck,
+        faDownload,
+        faImage,
+        faBars,
         faEnvelope,
-        faMusic, 
-        faWandMagicSparkles, 
-        faHeart, 
+        faMusic,
+        faWandMagicSparkles,
+        faHeart,
         faArrowRight,
-        faCircleXmark, 
-        faBomb, 
-        faPoo, 
-        faCameraRetro, 
-        faXmark, 
+        faCircleXmark,
+        faBomb,
+        faPoo,
+        faCameraRetro,
+        faXmark,
         faCloud,
-        faComment, 
-        faCaretUp, 
-        faTruckFast, 
-        faPenNib, 
-        faArrowUp, 
+        faComment,
+        faCaretUp,
+        faTruckFast,
+        faPenNib,
+        faArrowUp,
         faHippo,
-        faFaceSmile, 
-        faCalendarDays, 
-        faPaperclip, 
+        faFaceSmile,
+        faCalendarDays,
+        faPaperclip,
         faShieldHalved,
-        faFile, 
-        faBell, 
-        faClipboard, 
-        faFilter, 
-        faCircleInfo, 
+        faFile,
+        faBell,
+        faClipboard,
+        faFilter,
+        faCircleInfo,
         faArrowUpFromBracket,
-        faBolt, 
-        faCar, 
-        faGhost, 
-        faCircleUser, 
-        faPen, 
+        faBolt,
+        faCar,
+        faGhost,
+        faCircleUser,
+        faPen,
         faUmbrella,
-        faGift, 
-        faFilm, 
-        faList, 
-        faGear, 
-        faTrash, 
-        faCircleUp, 
-        faCircleDown, 
-        faInbox, 
-        faRotateRight, 
-        faLock, 
+        faGift,
+        faFilm,
+        faList,
+        faGear,
+        faTrash,
+        faCircleUp,
+        faCircleDown,
+        faInbox,
+        faRotateRight,
+        faLock,
         faHeadphones,
-        faBarcode, 
-        faTag, 
-        faBook, 
-        faBookmark, 
-        faPrint, 
+        faBarcode,
+        faTag,
+        faBook,
+        faBookmark,
+        faPrint,
         faCamera,
-        faFont, 
-        faCircleHalfStroke, 
-        faDroplet, 
-        faShareFromSquare, 
+        faFont,
+        faCircleHalfStroke,
+        faDroplet,
+        faShareFromSquare,
         faPlus,
-        faMinus, 
-        faShare, 
-        faCircleExclamation, 
-        faFire, 
-        faEye, 
+        faMinus,
+        faShare,
+        faCircleExclamation,
+        faFire,
+        faEye,
         faEyeSlash,
-        faPlane, 
-        faMagnet, 
-        faHand, 
-        faFolder, 
-        faFolderOpen, 
-        faMoneyBill, 
-        faThumbsUp, 
-        faThumbsDown, 
-        faComments, 
-        faLemon, 
-        faKey, 
+        faPlane,
+        faMagnet,
+        faHand,
+        faFolder,
+        faFolderOpen,
+        faMoneyBill,
+        faThumbsUp,
+        faThumbsDown,
+        faComments,
+        faLemon,
+        faKey,
         faThumbtack,
-        faGears, 
-        faPaperPlane, 
-        faCode, 
-        faGlobe, 
-        faTruck, 
+        faGears,
+        faPaperPlane,
+        faCode,
+        faGlobe,
+        faTruck,
         faCity,
-        faTicket, 
-        faTree, 
-        faWifi, 
-        faPaintRoller, 
-        faSliders, 
+        faTicket,
+        faTree,
+        faWifi,
+        faPaintRoller,
+        faSliders,
         faBrush,
-        faHashtag, 
-        faFlask, 
-        faBriefcase, 
-        faCompass, 
-        faDumpsterFire, 
-        faPerson, 
+        faHashtag,
+        faFlask,
+        faBriefcase,
+        faCompass,
+        faDumpsterFire,
+        faPerson,
         faPersonDress,
-        faAddressBook, 
-        faBath, 
-        faHandshake, 
+        faAddressBook,
+        faBath,
+        faHandshake,
         faSnowflake,
-        faRightToBracket, 
-        faEarthAmericas, 
-        faCloudArrowUp, 
-        faBinoculars, 
+        faRightToBracket,
+        faEarthAmericas,
+        faCloudArrowUp,
+        faBinoculars,
         faPalette,
-        faLayerGroup, 
-        faUsers, 
-        faGamepad, 
+        faLayerGroup,
+        faUsers,
+        faGamepad,
         faBusinessTime
     };
 
@@ -328,15 +329,15 @@ const SpendType: React.FC = () => {
     };
 
     const handleOk = () => {
-        if (editType === ""){
+        if (editType === "") {
             toast.error('Loại chi tiêu trống');
             return;
         }
-        if (editSpendAmount === null || editSpendAmount === 0){
+        if (editSpendAmount === null || editSpendAmount === 0) {
             toast.error('Số tiền dự tính không hợp lệ');
             return;
         }
-        if (editAbbre === ""){
+        if (editAbbre === "") {
             toast.error('Ký hiệu viết tắt trống');
             return;
         }
@@ -380,23 +381,23 @@ const SpendType: React.FC = () => {
     };
 
     const createNewSpendType = () => {
-        if (spendType === ""){
+        if (spendType === "") {
             toast.error('Vui lòng nhập loại chi tiêu')
             return
         }
-        if (abbre === ""){
+        if (abbre === "") {
             toast.error('Vui lòng nhập ký hiệu viết tắt')
             return
         }
-        if (spendAmount == null || spendAmount === 0){
+        if (spendAmount == null || spendAmount === 0) {
             toast.error('Vui lòng nhập số tiền dự tính')
             return
         }
-        if (selectedColor === null){
+        if (selectedColor === null) {
             toast.error('Vui lòng chọn màu')
             return
         }
-        if (selectedIcon === null){
+        if (selectedIcon === null) {
             toast.error('Vui lòng chọn biểu tượng')
             return
         }
@@ -428,7 +429,7 @@ const SpendType: React.FC = () => {
             })
             .catch(err => {
                 console.log(err)
-                toast.error("Xóa thất bại: " + err.response.data.message);
+                toast.error("Bạn không thể xóa loại chi tiêu này vì đã có giao dịch sử dụng loại chi tiêu này");
             })
         setIsDeleteModalOpen(false);
         setSelectedItem(null);
@@ -480,8 +481,6 @@ const SpendType: React.FC = () => {
         return matchesName || matchesAmount;
     });
 
-    const walletId = localStorage.getItem('walletId')
-
     if (loading) {
         return <p>Loading spend types...</p>;
     }
@@ -489,24 +488,7 @@ const SpendType: React.FC = () => {
         <div className="flex w-full h-full p-0 space-x-10 tao-bg">
             {/* Sidebar Thêm loại chi tiêu */}
             <div className="w-[25%] p-5 pink-bg rounded-lg h-full">
-                <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
-                    <Image className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]" src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
-                    <div className="top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
-                        <h2 className="text-[13px] font-semibold">TỔNG SỐ TIỀN DỰ TÍNH</h2>
-                        <div className="flex gap-5">
-                            <Image className="" src="/icons/spendtype/wallet.svg" alt="decoration" width={50} height={50} />
-                            <div>
-                                <p className={styles.money}>{totalEstimated.toLocaleString('vi-VN')} VND</p>
-                                <p className="text-sm font-md">Tổng số tiền</p>
-                            </div>
-                        </div>
-                        {
-                        walletId != null ?
-                            <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
-                            : <div></div>
-                        }
-                    </div>
-                </div>
+                <CurrentBalance />
 
                 <div>
                     <h3 className="text-[15px] mb-3 font-bold">Thêm Loại Chi Tiêu</h3>
@@ -542,7 +524,7 @@ const SpendType: React.FC = () => {
                                     autoComplete="off"
                                 />
                                 <label htmlFor="email" className={styles.text}>
-                                    Số tiền dự tính
+                                    Số tiền dự tính trong tháng
                                 </label>
                             </div>
                         </div>
@@ -625,8 +607,8 @@ const SpendType: React.FC = () => {
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="text-left py-3 px-4 font-semibold text-sm">Tên Chi Tiêu</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến</th>
-                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Dự Kiến Trong Tháng</th>
+                                <th className="text-left py-3 px-4 font-semibold text-sm">Số Tiền Đã Tiêu Trong Tháng</th>
                                 <th className="text-left py-3 px-4 font-semibold text-sm">Hành động</th>
                             </tr>
                         </thead>
@@ -745,13 +727,13 @@ const SpendType: React.FC = () => {
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Số tiền dự tính</label>
-                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..." 
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
-                            setEditSpendAmount(Number(value)); // Store as a number
-                        }}
-                        onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
-                        name="money" className={styles.inputMobal} />
+                        <input type="text" value={Math.round(editSpendAmount).toLocaleString("vi-VN")} placeholder="Write here..."
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, ""); // Remove all non-numeric characters
+                                setEditSpendAmount(Number(value)); // Store as a number
+                            }}
+                            onBlur={() => setEditSpendAmount(Math.round(editSpendAmount))}
+                            name="money" className={styles.inputMobal} />
                     </div>
                     <div className={styles.coolinput}>
                         <label htmlFor="input" className={styles.text}>Ký hiệu viết tắt</label>

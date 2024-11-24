@@ -1,7 +1,17 @@
-import { ReactNode } from 'react';
+"use client";
+
+import { ReactNode, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const Layout = ({ children }: { children: ReactNode }) => {
+    const router = useRouter();
+    useEffect(() => {
+        if (localStorage.getItem('userId')) {
+            router.push('/homepage');
+        }
+    }, [router])
+
     return (
         <div>
             <div className="auth-background">

@@ -59,6 +59,8 @@ import {
     faLayerGroup, faUsers, faGamepad, faBusinessTime,
     IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
+import CurrentBalance from '@/components/CurrentBalance';
+import { useNotificationContext } from '../layout';
 
 const SpendType: React.FC = () => {
 
@@ -254,6 +256,7 @@ const SpendType: React.FC = () => {
         amount: number;
         dateSpinding: string;
         typeSprinding: TypeSprinding;
+        paymentType: number;
     }
 
     const [expenditure, setExpenditure] = useState<Expenditure[]>([]);
@@ -271,14 +274,17 @@ const SpendType: React.FC = () => {
     const [expenditureAmount, setExpenditureAmount] = useState<any>();
     const [expenditureDate, setExpenditureDate] = useState<any>();
     const [loading, setLoading] = useState(true);  // State to handle loading
-    const totalEstimated = loading ? spendTypes.reduce((total, item) => total + item.estimatedAmount, 0) : 0;
 
     const [editId, setEditId] = useState<any>();
     const [editExpenditureName, setEditExpenditureName] = useState<any>();
     const [editExpenditureType, setEditExpenditureType] = useState<any>();
     const [editExpenditureSpendAmount, setEditExpenditureSpendAmount] = useState<any>();
     const [editExpenditureDate, setEditExpenditureDate] = useState<any>();
+    const [reloadCurrentBalance, setReloadCurrentBalance] = useState(false);
 
+    const { onNotification, setOnNotification } = useNotificationContext();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchSpendTypes = async () => {
         try {
             // Fetch data from API
@@ -295,8 +301,6 @@ const SpendType: React.FC = () => {
 
             setSpendTypes(updatedData);  // Set the modified data to state
             console.log("after set Response: ", spendTypes);  // Log the response data
-
-        } catch (error) {
 
         } finally {
             setLoading(false);
@@ -318,8 +322,6 @@ const SpendType: React.FC = () => {
             console.log(updatedData)
 
             setExpenditure(updatedData);  // Set the modified data to state
-        } catch (error) {
-
         } finally {
             setLoading(false);
         }
@@ -329,7 +331,17 @@ const SpendType: React.FC = () => {
     useEffect(() => {
         fetchSpendTypes();
         fetchExpenditure();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (onNotification) {
+            fetchSpendTypes();
+            fetchExpenditure();
+            setOnNotification(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onNotification, setOnNotification]);
 
     const handleOk = () => {
         if (editExpenditureType === "") {
@@ -352,6 +364,7 @@ const SpendType: React.FC = () => {
         })
             .then(res => {
                 toast.success("Sửa thành công");
+                setReloadCurrentBalance(!reloadCurrentBalance);
                 fetchExpenditure();
             })
             .catch(err => {
@@ -387,6 +400,11 @@ const SpendType: React.FC = () => {
             toast.error('Vui lòng nhập số tiền dự tính')
             return
         }
+        if (expenditureDate == null) {
+            toast.error('Vui lòng chọn ngày tháng')
+            return
+        }
+
 
         const userId = localStorage.getItem('userId')
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/expenditure`, {
@@ -397,8 +415,12 @@ const SpendType: React.FC = () => {
             userId,
         })
             .then(res => {
-                toast.success("Thêm thành công");
+                setReloadCurrentBalance(!reloadCurrentBalance);
                 fetchExpenditure();
+                setExpenditureName('');
+                setExpenditureSpendType('');
+                setExpenditureAmount(0);
+                setExpenditureDate(null);
             })
             .catch(err => {
                 console.log(err)
@@ -419,10 +441,11 @@ const SpendType: React.FC = () => {
     };
 
     const handleConfirmDelete = () => {
-        axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/expenditure/delete/${selectedItem}`, {
-        })
+        const userId = localStorage.getItem('userId')
+        axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/expenditure/delete/${selectedItem}?userId=${userId}`)
             .then(res => {
                 toast.success("Xóa thành công");
+                setReloadCurrentBalance(!reloadCurrentBalance);
                 fetchExpenditure();
             })
             .catch(err => {
@@ -460,14 +483,6 @@ const SpendType: React.FC = () => {
         return matchesName || matchesAmount;
     });
 
-    const options = [
-        { value: 'Tiền nhà', label: 'Tiền nhà' },
-        { value: 'Tiền điện', label: 'Tiền điện' },
-        { value: 'Tiền nước', label: 'Tiền nước' },
-        { value: 'Ăn uống', label: 'Ăn uống' },
-    ];
-
-    const walletId = localStorage.getItem('walletId')
 
     if (loading) {
         return <p>Loading spend types...</p>;
@@ -476,24 +491,7 @@ const SpendType: React.FC = () => {
         <div className="flex w-full h-full p-0 space-x-10 tao-bg">
             {/* Sidebar Thêm loại chi tiêu */}
             <div className="w-[25%] p-5 pink-bg rounded-lg h-full flex flex-col justify-between">
-                <div className="mb-3 p-2 bg-yellow-300 rounded-lg light-yellow-bg relative rounded-[20px] overflow-hidden">
-                    <Image className="absolute right-0 top-0 pl-[320px] h-[100%] min-h-[150px]" src="/icons/spendtype/decoration.svg" alt="decoration" width={430} height={500} />
-                    <div className="top-0 right-0 left-0 bottom-0 flex flex-col gap-2 px-4 py-4 z-[10]">
-                        <h2 className="text-[13px] font-semibold">SỐ DƯ TỪ VÍ ĐIỆN TỬ</h2>
-                        <div className="flex gap-5">
-                            <Image className="" src="/icons/spendtype/wallet.svg" alt="decoration" width={50} height={50} />
-                            <div>
-                                <p className={styles.money}>{totalEstimated.toLocaleString('vi-VN')} VND</p>
-                                <p className="text-sm font-md">Tổng chi phí</p>
-                            </div>
-                        </div>
-                        {
-                        walletId != null ?
-                            <div className="text-[13px] text-[#008080]">Đã liên kết ví điện tử</div>
-                            : <div></div>
-                        }
-                    </div>
-                </div>
+                <CurrentBalance reload={reloadCurrentBalance} />
 
                 <div>
                     <h3 className="text-[15px] mb-3 font-bold">Thêm Khoản Chi Tiêu</h3>
@@ -658,7 +656,7 @@ const SpendType: React.FC = () => {
                                             <p>{item.name}</p>
                                         </div>
                                     </td>
-                                    <td className="py-3 px-4">{item.typeSprinding.name}</td>
+                                    <td className="py-3 px-4">{item.paymentType === 1 ? 'Ví điện tử' : 'Tiền mặt'}</td>
                                     <td className="py-3 px-4">{new Date(item.dateSpinding).toLocaleDateString('en-GB').replace(/\//g, '-')}</td>
                                     <td className="py-3 px-4">{Math.round(item.amount).toLocaleString("vi-VN")} VND</td>
 
@@ -749,7 +747,7 @@ const SpendType: React.FC = () => {
                     <div className="mb-3">
                         <div className={styles.inputGroup}>
                             <select
-                                value={editExpenditureType}
+                                value={editExpenditureType?.id ?? 1}
                                 onChange={(e) => {
                                     const value = e.target.value; // Lấy giá trị được chọn
                                     setEditExpenditureType(value); // Cập nhật state cho spendType

@@ -6,9 +6,12 @@ import axios from 'axios';
 import NotificationItem from "./Notification/notification.interface";
 import { useRouter } from 'next/navigation';
 import { io } from "socket.io-client";
+import { toast } from 'react-toastify';
+import { useNotificationContext } from '@/app/(main)/layout';
 
 const Header = () => {
     const router = useRouter();
+    const { setOnNotification } = useNotificationContext();
     const [notifications, setNotifications] = useState<NotificationItem[]>([]);
     const [isNotificationOpen, setNotificationOpen] = useState(false);
 
@@ -70,18 +73,17 @@ const Header = () => {
         fetchNoti();
 
         const userId = localStorage.getItem('userId')
-        const socket = io(`https://kinu.onrender.com`, {
+        const socket = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`, {
             transports: ["websocket"],
             query: { userId },
         });
 
-        console.log(socket);
-
         socket.on('notification', (newNotification: NotificationItem) => {
-            console.log('fetch on change')
+            toast.success(newNotification.content);
             fetchNoti();
+            setOnNotification(true);
         });
-    }, []); // Adding an empty dependency array ensures fetchNoti runs only on initial render
+    }, [setOnNotification]);
 
 
     return (
@@ -118,7 +120,3 @@ const Header = () => {
 };
 
 export default Header;
-
-function fetchNoti() {
-    throw new Error('Function not implemented.');
-}

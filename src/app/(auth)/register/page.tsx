@@ -3,21 +3,20 @@
 import React, { useState } from "react";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import styles from "./register.module.scss";
-import axios from "axios";      
-import { useRouter } from 'next/navigation';
-import { toast } from "react-toastify"; 
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 
 const Register = () => {
-    const router = useRouter(); // Khởi tạo router để điều hướng
+    const router = useRouter();
 
     // Khởi tạo state cho email, password, thông báo lỗi và trạng thái hiển thị mật khẩu
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [repassword, setRepassword] = useState("");
-    const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false); // Trạng thái để quản lý hiển thị mật khẩu
     const [showRepassword, setShowRepassword] = useState(false); // Trạng thái để quản lý hiển thị mật khẩu nhập lại
 
@@ -26,37 +25,35 @@ const Register = () => {
         e.preventDefault(); // Ngăn chặn hành vi submit mặc định của form
 
         // Kiểm tra xem email và password có được nhập hay không
-        if ( !name || !email || !password || !repassword) {
-            setError("Please fill in");
+        if (!name || !email || !password || !repassword) {
+            toast.error("Vui lòng điền đầy đủ thông tin!");
             return;
         }
 
-        if (password != repassword){
-            setError("Re-enter password and password are not the same.");
+        if (password != repassword) {
+            toast.error("Mật khẩu không khớp!");
             return;
         }
 
-        setError("");
 
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/account`, {
             username: name,
             email,
             password,
-            fullname: "Tran Minh Quan",
-            phone: "0948628477",
-            birthday: "2003-08-05",
+            fullname: "KinU",
+            phone: "012345678",
+            birthday: "2003-01-01",
             gender: 0
         })
-        .then(res => {
-            console.log(res)
-            // localStorage.setItem('userId', res.data.data.id)
-            // router.push('/spendtype')
-            toast.success("Đăng ký thành công");
-        })
-        .catch(err => {
-            console.log(err)
-            toast.error(err.response.data.message)
-        })
+            .then(res => {
+                console.log(res)
+                router.push('/login')
+                toast.success("Đăng ký thành công");
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error(err.response.data.message)
+            })
     };
 
 
@@ -109,7 +106,7 @@ const Register = () => {
                                 required
                             />
                             <label htmlFor="password" className={styles.text}>
-                                Nhập mật khẩu 
+                                Nhập mật khẩu
                             </label>
                             {/* Nút toggle hiển thị/ẩn mật khẩu */}
                             <button
@@ -133,7 +130,7 @@ const Register = () => {
                                 required
                             />
                             <label htmlFor="password" className={styles.text}>
-                                Nhập lại mật khẩu 
+                                Nhập lại mật khẩu
                             </label>
                             {/* Nút toggle hiển thị/ẩn mật khẩu */}
                             <button
@@ -144,18 +141,6 @@ const Register = () => {
                                 {/* Đổi icon dựa vào trạng thái showPassword */}
                                 {showRepassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
                             </button>
-                        </div>
-
-                        {/* Hiển thị lỗi nếu có */}
-                        {error && (
-                            <p style={{ color: "#440000", fontSize: "10px" }}>{error}</p>
-                        )}
-
-                        {/* Liên kết quên mật khẩu */}
-                        <div className={styles.content}>
-                            <a href="/forgot" className={styles.passLink}>
-                                Quên mật khẩu?
-                            </a>
                         </div>
 
                         {/* Nút đăng kí */}
