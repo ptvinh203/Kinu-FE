@@ -256,7 +256,7 @@ const SpendType: React.FC = () => {
         amount: number;
         dateSpinding: string;
         typeSprinding: TypeSprinding;
-        paymentType: number;
+        paymentType: boolean;
     }
 
     const [expenditure, setExpenditure] = useState<Expenditure[]>([]);
@@ -656,7 +656,7 @@ const SpendType: React.FC = () => {
                                             <p>{item.name}</p>
                                         </div>
                                     </td>
-                                    <td className="py-3 px-4">{item.paymentType === 1 ? 'Ví điện tử' : 'Tiền mặt'}</td>
+                                    <td className="py-3 px-4">{item.paymentType === true ? 'Ví điện tử' : 'Tiền mặt'}</td>
                                     <td className="py-3 px-4">{new Date(item.dateSpinding).toLocaleDateString('en-GB').replace(/\//g, '-')}</td>
                                     <td className="py-3 px-4">{Math.round(item.amount).toLocaleString("vi-VN")} VND</td>
 
