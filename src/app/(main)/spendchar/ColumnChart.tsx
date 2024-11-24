@@ -93,7 +93,7 @@ const ColumnChart: React.FC = () => {
           />
         </BarChart >
       </ResponsiveContainer >
-      : <div>Không có dữ liệu</div>
+      : <div className="flex justify-center items-center text-gray-500 text-lg font-semibold">Không có dữ liệu</div>
 
   );
 };

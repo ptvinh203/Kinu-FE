@@ -50,6 +50,10 @@ const Login = () => {
         })
     };
 
+    const toRegister = () => {
+        router.push('/register')
+    }
+
     return (
         <div className="relative w-full flex flex-col justify-end items-start gap-0 pl-[250px]">
             <div className={styles.container}>
@@ -106,7 +110,7 @@ const Login = () => {
                     </form>
                     <div className={styles.regisLink}>
                         <p className={styles.textRegis}>Chưa có tài khoản?</p>
-                        <a href="#" className={styles.linkRegis}>
+                        <a onClick={toRegister} className={styles.linkRegis}>
                             Đăng ký
                         </a>
                     </div>

@@ -125,7 +125,7 @@ const SpendChart: React.FC = () => {
                 height={50}
               />
               <div>
-                <p className={styles.money}>10.000.000 VND</p>
+                <p className={styles.money}>0 VND</p>
                 <p className="text-sm font-md">Tổng chi phí</p>
               </div>
             </div>

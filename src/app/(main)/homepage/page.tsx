@@ -250,29 +250,34 @@ const SpendType: React.FC = () => {
     const [editExpenditureSpendAmount, setEditExpenditureSpendAmount] = useState<any>();
     const [editExpenditureDate, setEditExpenditureDate] = useState<any>();
 
-    const [expenditure, setExpenditure] = useState([
-        {
-            id: 0,
-            name: "",
-            amount: 0,
-            dateSpinding: "",
-            typeSprinding: {
-                id: 0,
-                name: "",
-                estimatedAmount: 0,
-                abbreviation: "",
-                color: {
-                    colorCode: "",
-
-                },
-                icon: {
-                    id: "",
-                    name: "",
-                    svgUrl: "",
-                }
-            }
-        }
-    ]);
+    interface Icon {
+        id: string;
+        name: string;
+        svgUrl: string;
+    }
+    
+    interface Color {
+        colorCode: string;
+    }
+    
+    interface TypeSpending {
+        id: number;
+        name: string;
+        estimatedAmount: number;
+        abbreviation: string;
+        color: Color;
+        icon: Icon;
+    }
+    
+    interface Expenditure {
+        id: number;
+        name: string;
+        amount: number;
+        dateSpinding: string;
+        typeSprinding: TypeSpending;
+    }
+    
+    const [expenditure, setExpenditure] = useState<Expenditure[]>([]);
 
     const totalAmount = expenditure.reduce((acc, item) => acc + Number(item.amount), 0);
 
@@ -653,7 +658,7 @@ const SpendType: React.FC = () => {
                 </table>
                 <div className={styles.tableContainer}>
 
-                    <div className={styles.tableContainer}>
+                    <div className={`${styles.tableContainer} h-full`}>
                         <table className="min-w-full tao-bg">
                             <thead>
                                 <tr className="bg-gray-100">
