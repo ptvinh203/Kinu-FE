@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Tooltip } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
 
@@ -93,7 +93,6 @@ const SpendType: React.FC = () => {
     const [spendAmount, setSpendAmount] = useState<any>();
     const [abbre, setAbbre] = useState("");
     const [loading, setLoading] = useState(true);  // State to handle loading
-    const totalEstimated = localStorage.getItem('currentBalance') != null ? Number(localStorage.getItem('currentBalance')) : 0;
 
     const [editId, setEditId] = useState<any>();
     const [editType, setEditType] = useState<any>();
@@ -498,7 +497,12 @@ const SpendType: React.FC = () => {
                                 <input
                                     type="text"
                                     value={spendType}
-                                    onChange={(e) => setSpendType(e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setSpendType(value);
+                                        if (value === "") setAbbre("");
+                                        else setAbbre(value.split(" ").map((word) => word[0].toUpperCase()).join(""));
+                                    }}
                                     className={styles.inputLo}
                                     required
                                     autoComplete="off"
@@ -530,19 +534,21 @@ const SpendType: React.FC = () => {
                         </div>
 
                         <div className="mb-3">
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="text"
-                                    value={abbre}
-                                    onChange={(e) => setAbbre(e.target.value)}
-                                    className={styles.inputLo}
-                                    required
-                                    autoComplete="off"
-                                />
-                                <label htmlFor="email" className={styles.text}>
-                                    Ký hiệu viết tắt
-                                </label>
-                            </div>
+                            <Tooltip title='Ký hiệu viết tắt dùng để phân loại các khoản chi tiêu khi được tạo tự động'>
+                                <div className={styles.inputGroup}>
+                                    <input
+                                        type="text"
+                                        value={abbre}
+                                        onChange={(e) => setAbbre(e.target.value)}
+                                        className={styles.inputLo}
+                                        required
+                                        autoComplete="off"
+                                    />
+                                    <label htmlFor="email" className={styles.text}>
+                                        Ký hiệu viết tắt
+                                    </label>
+                                </div>
+                            </Tooltip>
                         </div>
 
                         <div className={styles.coolinput}>

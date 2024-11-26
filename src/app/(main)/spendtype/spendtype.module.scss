@@ -1,38 +1,38 @@
 .inputGroup {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   margin: 1em 0;
   position: relative;
   width: 100%;
 
-    .inputLo {
-      font-size: 100%;
-      padding: 0.5em;
-      outline: none;
-      border: 1px solid rgb(0, 0, 0);
-      background-color: transparent;
-      border-radius: 10px;
-      width: 100%;
-    }
+  .inputLo {
+    font-size: 100%;
+    padding: 0.5em;
+    outline: none;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: transparent;
+    border-radius: 10px;
+    width: 100%;
+  }
 
-    .text {
-      font-size: 100%;
-      position: absolute;
-      left: 0;
-      padding: 0.5em;
-      margin-left: 0.5em;
-      pointer-events: none;
-      transition: all 0.3s ease;
-      color: rgb(100, 100, 100);
-    }
+  .text {
+    font-size: 100%;
+    position: absolute;
+    left: 0;
+    padding: 0.5em;
+    margin-left: 0.5em;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: rgb(100, 100, 100);
+  }
 
-    .inputLo:focus ~ .text,
-    .inputLo:valid ~ .text {
-      transform: translateY(-50%) scale(.9);
-      margin: 0;
-      margin-left: 1.3em;
-      padding: 0.2em;
-      background-color: var(--light-pink);
-    }
+  .inputLo:focus ~ .text,
+  .inputLo:valid ~ .text {
+    transform: translateY(-50%) scale(0.9);
+    margin: 0;
+    margin-left: 1.3em;
+    padding: 0.2em;
+    background-color: var(--light-pink);
+  }
 
   .togglePassword {
     position: absolute;
@@ -74,32 +74,32 @@
     outline: none;
   }
 
-    .colorOptions {
+  .colorOptions {
+    display: flex;
+    overflow-y: auto;
+    max-height: 130px;
+    width: 100%;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    border: 1px #000000 solid;
+    padding: 10px;
+    justify-content: flex-start; /* Align items to the left */
+    gap: 10px;
+
+    .colorItem {
       display: flex;
-      overflow-y: auto;
-      max-height: 130px;
-      width: 100%;
-      flex-wrap: wrap;
-      border-radius: 10px;
-      border: 1px #000000 solid;
-      padding: 10px;
-      justify-content: flex-start; /* Align items to the left */
-      gap: 10px;
-      
-      .colorItem {
-        display: flex;
-        width: calc(100% / 5 - 10px);
-        height: 30px;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        
-        &:hover {
-          background-color: #f0f0f0;
-        }
+      width: calc(100% / 5 - 10px);
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
 
       &.selected {
         background-color: #e0e0e0;
@@ -138,25 +138,25 @@
     width: 30%;
     margin-right: 2%;
 
-      .searchTbl{
-        width: 100%;
-        padding: 10px 30px 10px 20px;
-        border-radius: 10px;
-      }
-  
-      .iconOverlay {
-        color: #64646484;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 3%;
-        display: flex;
-        align-items: center;
-        padding-right: 0.75rem; 
-        pointer-events: none;
-      }
+    .searchTbl {
+      width: 100%;
+      padding: 10px 30px 10px 20px;
+      border-radius: 10px;
+    }
+
+    .iconOverlay {
+      color: #64646484;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 3%;
+      display: flex;
+      align-items: center;
+      padding-right: 0.75rem;
+      pointer-events: none;
     }
   }
+}
 
 .headMobal {
   display: flex;
@@ -236,11 +236,11 @@
     }
   }
 
-    .btnDeleMobal{
-      display: flex;
-      align-items: center;
-      padding-left: 15px;
-      gap: 20px;
+  .btnDeleMobal {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    gap: 20px;
 
     .btnCan {
       background-color: red;
@@ -249,53 +249,52 @@
       color: #fff;
     }
 
-      .btnOk{
-        background-color: #2bdf79;
-        padding: 5px 60px;
-        border-radius: 10px;
-        color: #fff;
-      }
+    .btnOk {
+      background-color: #2bdf79;
+      padding: 5px 60px;
+      border-radius: 10px;
+      color: #fff;
     }
   }
-  
-  .money{
-    font-size: 110%;
-    font-weight: bold;
-  }
+}
 
-  .tableContainer {
-    display: block;
-    max-height: 72%;
-    overflow-y: auto;
-  }
-  
-  .bodyTbl {
-    border-style: none;
-  }
-  
-  // .bodyTbl tr:hover {
-  //   background-color: #fd3b003a; 
-  //   border-radius: 10px;
-  // }
-  
-  .nameIcon {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .bgrIcon {
-    width: 35px;
-    height: 35px;
-    padding: 5px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .iconTable {
-    color: #fff;
-  }
-  
+.money {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+.tableContainer {
+  display: block;
+  max-height: 72%;
+  overflow-y: auto;
+}
+
+.bodyTbl {
+  border-style: none;
+}
+
+// .bodyTbl tr:hover {
+//   background-color: #fd3b003a;
+//   border-radius: 10px;
+// }
+
+.nameIcon {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.bgrIcon {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconTable {
+  color: #fff;
+}

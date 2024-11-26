@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface CurrentBalanceProps {
-    reload: boolean;
+    reload?: boolean;
 }
 
 const CurrentBalance = ({ reload }: CurrentBalanceProps) => {
